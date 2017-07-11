@@ -10,6 +10,22 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost/mydb'
 
 db = SQLAlchemy(app)
 
+class Usuario(db.Model):
+    __tablename__ = 'usuario'
+
+    cpf = db.Column(db.VARCHAR(45), primary_key=True, nullable=False)
+    email = db.Column(db.VARCHAR(45), nullable=False)
+    senha = db.Column(db.VARCHAR(45), nullable=False)
+    nome = db.Column(db.VARCHAR(45), nullable=False)
+
+    def __init__(self, cpf, email, senha, nome):
+        self.cpf = cpf
+        self.email = email
+        self.senha = senha
+        self.nome = nome
+
+
+
 class Localidade(db.Model):
     __tablename__ = 'localidade'
 
@@ -42,9 +58,9 @@ class Roteiro(db.Model):
     id = db.Column(db.INT(), primary_key=True)
     titulo = db.Column(db.VARCHAR(45), nullable=False)
     aceitacao = db.Column(db.VARCHAR(45), nullable=False)
-    idusuario = db.Column(db.VARCHAR(45), ForeignKey('usuario.id'), nullable=False)
+    idusuario = db.Column(db.VARCHAR(45), ForeignKey('usuario.cpf'), nullable=False)
 
-    id_Usuario_Roteiro = relationship('usuario', foreign_keys=[idusuario])
+    id_Usuario_Roteiro = relationship(Usuario, foreign_keys=[idusuario])
 
     def __init__(self, id, titulo, aceitacao, idusuario):
         self.id = id
@@ -59,8 +75,8 @@ class Roteiro_Palavrachave(db.Model):
     idroteiro = db.Column(db.INT(), ForeignKey('roteiro.id'), nullable=False, primary_key=True)
     idpalavrachave = db.Column(db.INT(), ForeignKey('palavra_chave.id'), nullable=False, primary_key=True)
 
-    id_Roteiro = relationship('roteiro', foreign_keys=[idroteiro])
-    id_Palavra_Chave = relationship('palavra_chave', foreign_keys=[idroteiro])
+    id_Roteiro = relationship(Roteiro, foreign_keys=[idroteiro])
+    id_Palavra_Chave = relationship(Palavra_Chave, foreign_keys=[idpalavrachave])
 
     def __init__(self, idroteiro, idpalavrachave):
         self.idroteiro = idroteiro
@@ -87,7 +103,7 @@ class Tweet(db.Model):
     like = db.Column(db.INT(), nullable=False)
     idLocalidade = db.Column(db.INT(), ForeignKey('localidade.id'), nullable=False)
 
-    id_Localidade = relationship('localidade', foreign_keys=[idLocalidade])
+    id_Localidade = relationship(Localidade, foreign_keys=[idLocalidade])
 
     def __init__(self, id, texto, data, like, idLocalidade):
         self.id = id
@@ -103,8 +119,8 @@ class Tweet_Palavrachave(db.Model):
     idtweet = db.Column(db.INT(), ForeignKey('tweet.id'), nullable=False, primary_key=True)
     idpalavrachave = db.Column(db.INT(), ForeignKey('palavra_chave.id'), nullable=False, primary_key=True)
 
-    id_Tweet = relationship('tweet', foreign_keys=[idtweet])
-    id_Palavra_Chave = relationship('palavra_chave', foreign_keys=[idpalavrachave])
+    id_Tweet = relationship(Tweet, foreign_keys=[idtweet])
+    id_Palavra_Chave = relationship(Palavra_Chave, foreign_keys=[idpalavrachave])
 
     def __init__(self, idtweet, idpalavrachave):
         self.idtweet = idtweet
@@ -117,27 +133,15 @@ class Tweet_Sentimento(db.Model):
     idtweet = db.Column(db.INT(), ForeignKey('tweet.id'), nullable=False, primary_key=True)
     idsentimento = db.Column(db.INT(), ForeignKey('sentimento.id'), nullable=False, primary_key=True)
 
-    id_Tweet = relationship('tweet', foreign_keys=[idtweet])
-    id_Sentimento = relationship('sentimento', foreign_keys=[idsentimento])
+    id_Tweet = relationship(Tweet, foreign_keys=[idtweet])
+    id_Sentimento = relationship(Sentimento, foreign_keys=[idsentimento])
 
     def __init__(self, idtweet, idsentimento):
         self.idtweet = idtweet
         self.idsentimento = idsentimento
 
 
-class Usuario(db.Model):
-    __tablename__ = 'usuario'
 
-    cpf = db.Column(db.VARCHAR(45), primary_key=True, nullable=False)
-    email = db.Column(db.VARCHAR(45), nullable=False)
-    senha = db.Column(db.VARCHAR(45), nullable=False)
-    nome = db.Column(db.VARCHAR(45), nullable=False)
-
-    def __init__(self, cpf, email, senha, nome):
-        self.cpf = cpf
-        self.email = email
-        self.senha = senha
-        self.nome = nome
 
 
 
@@ -146,22 +150,41 @@ class Usuario(db.Model):
 def index():
     return 'Hello World'
 
-@app.route("/cadastrarComputador")
-def cadastrarComputador():
+@app.route("/cadastrarRoteiro")
+def cadastrarRoteiro():
     return render_template("pages/forms.html")
 
 
-@app.route("/cadastroComputador", methods=["GET", "POST"])
-def cadastroComputador():
+@app.route("/cadastroRoteiro", methods=["GET", "POST"])
+def cadastroRoteiro():
     if (request.method == "POST"):
         titulo = request.form.get("nome_roteiro")
-        genero= request.form.get("genero")
+        generos=['Acao','Drama', 'Aventura','Terror']
+        resultado=[]
+        for genero in generos:
+            if request.form.get(genero)=='on':
+                resultado.append(genero)
+
+        #genero= request.form.get("genero")
         palavras_chave= request.form.get("tokenfield")
 
-        print(titulo)
-        print(genero)
-        print (palavras_chave)
-        return str(titulo)
+        if (titulo and resultado):
+            r = Roteiro(id=None,titulo=titulo, aceitacao=0,idusuario=23456789)
+            db.session.add(r)
+            db.session.flush()
+            print(r.id)
+            for palavra in resultado:
+                p=Palavra_Chave(id=None,palavra=palavra,sentimento='Neutro')
+                db.session.add(p)
+                db.session.flush()
+                print(p.id)
+                rp=Roteiro_Palavrachave(r.id,p.id)
+                db.session.add(rp)
+            db.session.commit()
+
+
+
+        return ("Acho que não deu merda")
     return render_template("index.html")
 
 
