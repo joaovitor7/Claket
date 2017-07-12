@@ -9,9 +9,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>Cadastro de Roteiro</title>
 
 
+    <link href="css/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=MedievalSharp|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="css/tags.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet"
@@ -22,7 +26,8 @@
       href="{{url_for('.static', filename='metisMenu.min.css')}}">
     <!-- Custom CSS -->
 
-
+    <link rel="stylesheet"
+      href="{{url_for('.static', filename='bootstrap-tokenfield.min.css')}}">
 
     <link rel="stylesheet"
       href="{{url_for('.static', filename='sb-admin-2.css')}}">
@@ -159,11 +164,13 @@
                                         </div>
                                         
                                         <div class="form-group">
+                                            <div class="form-group">
                                             <label>Palavras-chave</label>
-                                            <input class="form-control" name="tokenfield" id="tokenfield" value="">
+                                            <input type="text" class="form-control" id="tokenfield" name="tokenfield" value="Digite, as, palavras" >
+                                        </div>
                                         </div>
 
-                                        <input type="submit" class="btn btn-default">Avaliar Roteiro</input>
+                                        <input type="submit" class="btn btn-default"></input>
                                         <button type="reset" class="btn btn-default">Limpar campos</button>
                                     </form>
                                 </div>
@@ -207,11 +214,11 @@
 
     <script src="{{url_for('.static', filename='sb-admin-2.js')}}"></script>
 
-    <script>
-        
+   <script>
+
                 $('#tokenfield').tokenfield({
                         autocomplete: {
-                        source: ['bullying','putas','gritos'],
+                        source: ['bullying','medieval','carros'],
                         delay: 100
                     },
                  showAutocompleteOnFocus: true
@@ -221,6 +228,8 @@
                 $('#tokenfield').tokenfield();
 
     </script>
+
+
 
 </body>
 

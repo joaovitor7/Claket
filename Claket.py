@@ -160,24 +160,25 @@ def cadastroRoteiro():
     if (request.method == "POST"):
         titulo = request.form.get("nome_roteiro")
         generos=['Acao','Drama', 'Aventura','Terror']
+        palavras_chave= request.form.get("tokenfield")
         resultado=[]
+        print(palavras_chave)
         for genero in generos:
             if request.form.get(genero)=='on':
                 resultado.append(genero)
 
-        #genero= request.form.get("genero")
-        palavras_chave= request.form.get("tokenfield")
+        palavras_chave=palavras_chave.split(", ")
+        for palavra in palavras_chave:
+            resultado.append(palavra)
 
-        if (titulo and resultado):
+        if (titulo and resultado and palavras_chave):
             r = Roteiro(id=None,titulo=titulo, aceitacao=0,idusuario=23456789)
             db.session.add(r)
             db.session.flush()
-            print(r.id)
             for palavra in resultado:
                 p=Palavra_Chave(id=None,palavra=palavra,sentimento='Neutro')
                 db.session.add(p)
                 db.session.flush()
-                print(p.id)
                 rp=Roteiro_Palavrachave(r.id,p.id)
                 db.session.add(rp)
             db.session.commit()
