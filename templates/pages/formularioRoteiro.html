@@ -12,10 +12,7 @@
     <title>Cadastro de Roteiro</title>
 
 
-    <link href="css/style.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=MedievalSharp|Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="css/tags.css">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet"
@@ -104,7 +101,10 @@
                             <a href="#"></i>Roteiros<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="forms.html">Cadastrar Roteiro</a>
+                                    <a href="{{url_for("cadastrarRoteiro")}}">Cadastrar Roteiro</a>
+                                </li>
+                                <li>
+                                    <a href="{{url_for("listarRoteiros")}}">Meus Roteiro</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->

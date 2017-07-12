@@ -148,11 +148,11 @@ class Tweet_Sentimento(db.Model):
 
 @app.route('/')
 def index():
-    return 'Hello World'
+    return render_template("pages/index.html")
 
 @app.route("/cadastrarRoteiro")
 def cadastrarRoteiro():
-    return render_template("pages/forms.html")
+    return render_template("pages/formularioRoteiro.html")
 
 
 @app.route("/cadastroRoteiro", methods=["GET", "POST"])
@@ -162,7 +162,6 @@ def cadastroRoteiro():
         generos=['Acao','Drama', 'Aventura','Terror']
         palavras_chave= request.form.get("tokenfield")
         resultado=[]
-        print(palavras_chave)
         for genero in generos:
             if request.form.get(genero)=='on':
                 resultado.append(genero)
@@ -176,19 +175,24 @@ def cadastroRoteiro():
             db.session.add(r)
             db.session.flush()
             for palavra in resultado:
-                p=Palavra_Chave(id=None,palavra=palavra,sentimento='Neutro')
-                db.session.add(p)
-                db.session.flush()
-                rp=Roteiro_Palavrachave(r.id,p.id)
-                db.session.add(rp)
+                palavra_no_banco = Palavra_Chave.query.filter_by(palavra=palavra).first()
+                if (palavra_no_banco == None):
+                    p=Palavra_Chave(id=None,palavra=palavra,sentimento='Neutro')
+                    db.session.add(p)
+                    db.session.flush()
+                    rp=Roteiro_Palavrachave(r.id,p.id)
+                    db.session.add(rp)
+                else:
+                    rp = Roteiro_Palavrachave(r.id, palavra_no_banco.id)
+                    db.session.add(rp)
             db.session.commit()
 
+        return render_template("pages/index.html")
+    return render_template("pages/index.html")
 
-
-        return ("Acho que não deu merda")
-    return render_template("index.html")
-
-
+@app.route("/listagemRoteiro")
+def listarRoteiros():
+    return render_template("pages/listagemRoteiro.html")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
