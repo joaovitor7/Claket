@@ -4,7 +4,6 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
 
-
 class Usuario(db.Model):
     __tablename__ = 'usuario'
 
@@ -20,7 +19,6 @@ class Usuario(db.Model):
         self.nome = nome
 
 
-
 class Localidade(db.Model):
     __tablename__ = 'localidade'
 
@@ -34,19 +32,26 @@ class Localidade(db.Model):
         self.longitude = longitude
 
 
+class Genero(db.Model):
+    __tablename__ = 'genero'
+
+    id = db.Column(db.INT(), primary_key=True)
+    genero = db.Column(db.VARCHAR(45), nullable=False)
+
+    def __init__(self, id, genero):
+        self.id = id
+        self.genero = genero
+
 
 class Palavra_Chave(db.Model):
     __tablename__ = 'palavra_chave'
 
     id = db.Column(db.INT(), primary_key=True)
     palavra = db.Column(db.VARCHAR(45), nullable=False)
-    sentimento = db.Column(db.VARCHAR(45), nullable=False)
 
-    def __init__(self, id, palavra, sentimento):
+    def __init__(self, id, palavra):
         self.id = id
         self.palavra = palavra
-        self.sentimento = sentimento
-
 
 
 class Roteiro(db.Model):
@@ -81,6 +86,19 @@ class Roteiro_Palavrachave(db.Model):
         self.idpalavrachave = idpalavrachave
 
 
+class Roteiro_Genero(db.Model):
+    __tablename__ = 'roteiro_genero'
+
+    idroteiro = db.Column(db.INT(), ForeignKey('roteiro.id'), nullable=False, primary_key=True)
+    idgenero = db.Column(db.INT(), ForeignKey('genero.id'), nullable=False, primary_key=True)
+
+    id_Roteiro = relationship(Roteiro, foreign_keys=[idroteiro])
+    id_Genero = relationship(Genero, foreign_keys=[idgenero])
+
+    def __init__(self, idroteiro, idgenero):
+        self.idroteiro = idroteiro
+        self.idgenero = idgenero
+
 
 class Sentimento(db.Model):
     __tablename__ = 'sentimento'
@@ -92,6 +110,19 @@ class Sentimento(db.Model):
         self.id = id
         self.sentimento = sentimento
 
+
+class Sentimento_Palavrachave(db.Model):
+    __tablename__ = 'sentimento_palavrachave'
+
+    idsentimento = db.Column(db.INT(), ForeignKey('sentimento.id'), primary_key=True, nullable=False)
+    idpalavrachave = db.Column(db.INT(), ForeignKey('palavra_chave.id'), primary_key=True, nullable=False)
+
+    id_Sentimento = relationship(Sentimento, foreign_keys=[idsentimento])
+    id_Palavrachave = relationship(Palavra_Chave, foreign_keys=[idpalavrachave])
+
+    def __init__(self, idsentimento, idpalavrachave):
+        self.idsentimento = idsentimento
+        self.idpalavrachave = idpalavrachave
 
 
 class Tweet(db.Model):
@@ -114,7 +145,6 @@ class Tweet(db.Model):
         self.idLocalidade = idLocalidade
 
 
-
 class Tweet_Palavrachave(db.Model):
     __tablename__ = 'tweet_palavrachave'
 
@@ -127,7 +157,6 @@ class Tweet_Palavrachave(db.Model):
     def __init__(self, idtweet, idpalavrachave):
         self.idtweet = idtweet
         self.idpalavrachave = idpalavrachave
-
 
 
 class Tweet_Sentimento(db.Model):
