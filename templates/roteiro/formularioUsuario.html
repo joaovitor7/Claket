@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Cadastro de Roteiro</title>
+
+    <link rel="stylesheet"
+      href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet"
+      href="/static/css/bootstrap-tokenfield.min.css">
+    <link rel="stylesheet"
+      href="/static/css/style.css">
+    <!-- Custom Fonts -->
+    <link rel="stylesheet"
+      href="/static/css/font-awesome.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript">
+    function cadastrarRoteiro(){
+            $.ajax({
+                      type: "POST",
+                      url: "{{ url_for('cadastroRoteiro') }}",
+                      data: { 
+                                nome_roteiro: document.form.nome_roteiro.value, 
+                                tokenfield: document.form.tokenfield.value,
+                                genero: document.form.genero.value
+                            },
+                      success:  function(retorno) {  $('#aviso').html(retorno); alert("Boaa Mulequee")  },
+                      error:     function()  {  alert("Deu pra trás");  },
+                   }); 
+        }
+        
+    </script>
+</head>
+
+<body>
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Claket</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+               
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i>Perfil</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i>Configurações</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i>Sair</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu"> 
+                        <li>
+                            <a href="#">Planos</a>
+                        </li>
+                        <li>
+                            <a href="#"></i>Roteiros<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{url_for("listarRoteiros")}}">Meus Roteiros</a>
+                                </li>
+                                <li>
+                                    <a href="{{url_for("cadastrarRoteiro")}}">Cadastrar Roteiro</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#">Configurações</a>
+                        </li>
+                        <li>
+                            <a href="#">Sair</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Cadastro de Usuario</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+<!-- <div id="aviso"></div> -->
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Novo Usuario
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <form role="form" name="form" action="{{ url_for('cadastroUsuario') }}" method="post">
+
+                                        <div class="form-group">
+                                            <label>Nome</label>
+                                            <input class="form-control" name="nome_usuario">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>E-mail</label>
+                                            <input class="form-control" name="email">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Senha</label>
+                                            <input class="form-control" name="senha">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Confirmação da Senha</label>
+                                            <input class="form-control" name="senha_confirmacao">
+                                        </div>
+                                       
+                                        <div class="form-group">
+                                            <label>Planos</label>
+                                            <label class="checkbox-inline">
+                                                <input name="Acao"  type="checkbox">Ação
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input name="Aventura"  type="checkbox">Aventura
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input name="Drama"  type="checkbox">Drama
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input name="Terror" type="checkbox">Terror
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                            <label>Palavras-chave</label>
+                                            <input type="text" class="form-control" id="tokenfield" name="tokenfield" value="Digite, as, palavras" >
+                                        </div>
+                                        </div>
+
+                                        <!--input type="submit" class="btn btn-default"></input-->
+                                        <button class="btn btn-default" onclick="cadastrarRoteiro();">Cadastrar</button>
+                                        <button type="reset" class="btn btn-default">Limpar campos</button>
+                                    </form>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap-tokenfield.js"></script>
+    <script src="/static/js/script.js"></script>
+
+   <script>
+                $('#tokenfield').tokenfield({
+                        autocomplete: {
+                        source: ['bullying','medieval','carros'],
+                        delay: 100
+                    },
+                 showAutocompleteOnFocus: true
+                })
+
+
+                $('#tokenfield').tokenfield();
+    </script>
+
+</body>
+</html>
