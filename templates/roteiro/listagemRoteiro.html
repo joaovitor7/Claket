@@ -107,6 +107,28 @@
             <!-- /.row -->
             <div class="row">
                 {{myContent}}
+                    <table class="table">
+                        <thead class="thead-default">
+                            <tr>
+                                <th align="center"><h3>Roteiro</h3></th>
+                                <th align="center"><h3>Data da Avaliação</h3></th>
+                                <th align="center"><h3>Nota</h3></th>
+                                <th align="center"><h3>Editar</h3></th>
+                                
+                            </tr>
+                        </thead>
+                        {%  for roteiro in roteiros %}
+                        <tr>
+                            <td>{{ roteiro.titulo }}</td>
+                            <td>dd/mm/aaaa</td>
+                            <td>{{ roteiro.aceitacao }}</td>
+                            <td>Editar</td>
+                            
+                            
+                        </tr>
+                        {% endfor %}
+                </table>
+
             </div>
             <!-- /.row -->
         </div>

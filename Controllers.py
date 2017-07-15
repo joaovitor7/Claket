@@ -65,4 +65,5 @@ def cadastroRoteiro():
 
 @app.route("/listagemRoteiro")
 def listarRoteiros():
-    return render_template("roteiro/listagemRoteiro.html")
+    roteiros= Roteiro.query.filter_by(idusuario='23456789').all()
+    return render_template("roteiro/listagemRoteiro.html", roteiros=roteiros)
