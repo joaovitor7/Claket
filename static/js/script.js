@@ -3,6 +3,19 @@
  * Copyright 2013-2016 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
+$(function () {
+    $('.btn-radio').click(function(e) {
+        $('.btn-radio').not(this).removeClass('active')
+            .siblings('input').prop('checked',false)
+            .siblings('.img-radio').css('opacity','0.5');
+        $(this).addClass('active')
+            .siblings('input').prop('checked',true)
+            .siblings('.img-radio').css('opacity','1');
+    });
+});
+
+
+
 $(function() {
     $('#side-menu').metisMenu();
 });

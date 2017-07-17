@@ -1,7 +1,7 @@
 from Claket import app
 from Models import *
 
-from flask import render_template, request
+from flask import render_template, request, url_for, redirect
 
 
 @app.route('/')
@@ -67,3 +67,23 @@ def cadastroRoteiro():
 def listarRoteiros():
     roteiros= Roteiro.query.filter_by(idusuario='23456789').all()
     return render_template("roteiro/listagemRoteiro.html", roteiros=roteiros)
+
+@app.route("/excluirRoteiro/<int:id>")
+def excluirRoteiro(id):
+    roteiro= Roteiro.query.filter_by(id=id).first()
+    db.session.delete(roteiro)
+    db.session.commit()
+
+    return listarRoteiros()
+
+@app.route("/editarRoteiro/<int:id>", methods=["GET", "POST"])
+def editarRoteiro(id):
+    roteiro = Roteiro.query.filter_by(id=id).first()
+    roteiro_palavrachave=Roteiro_Palavrachave.query.filter_by(idroteiro=id).all()
+    roteiro_genero=Roteiro_Genero.filter_by(idroteiro=id).all()
+
+    return roteiro_genero
+
+@app.route("/formularioUsuario",)
+def cadastroUsuario():
+    return render_template('roteiro/formularioUsuario.html')

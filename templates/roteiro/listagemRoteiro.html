@@ -114,6 +114,8 @@
                                 <th align="center"><h3>Data da Avaliação</h3></th>
                                 <th align="center"><h3>Nota</h3></th>
                                 <th align="center"><h3>Editar</h3></th>
+                                <th align="center"><h3>Excluir</h3></th>
+
                                 
                             </tr>
                         </thead>
@@ -122,7 +124,9 @@
                             <td>{{ roteiro.titulo }}</td>
                             <td>dd/mm/aaaa</td>
                             <td>{{ roteiro.aceitacao }}</td>
-                            <td>Editar</td>
+                            <td><a href="/editarRoteiro/{{roteiro.id}}">Editar</a></td>
+                            <td><a href="/excluirRoteiro/{{ roteiro.id }}">X</a></td>
+
                             
                             
                         </tr>
