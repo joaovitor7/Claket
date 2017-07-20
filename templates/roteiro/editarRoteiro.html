@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Cadastro de Roteiro</title>
+
+    <link rel="stylesheet"
+      href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet"
+      href="/static/css/bootstrap-tokenfield.min.css">
+    <link rel="stylesheet"
+      href="/static/css/style.css">
+    <!-- Custom Fonts -->
+    <link rel="stylesheet"
+      href="/static/css/font-awesome.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript">
+
+        
+    </script>
+</head>
+
+<body>
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Claket</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+               
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i>Perfil</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i>Configurações</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i>Sair</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu"> 
+                        <li>
+                            <a href="#">Planos</a>
+                        </li>
+                        <li>
+                            <a href="#"></i>Roteiros<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{url_for("listarRoteiros")}}">Meus Roteiros</a>
+                                </li>
+                                <li>
+                                    <a href="{{url_for("cadastrarRoteiro")}}">Cadastrar Roteiro</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#">Configurações</a>
+                        </li>
+                        <li>
+                            <a href="#">Sair</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">{{ roteiro.titulo}}</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+<!-- <div id="aviso"></div> -->
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            {{ roteiro.titulo }}
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <form role="form" name="form" action="" method="post">
+
+
+                                        <label>Nome</label>
+                                            <input class="form-control" name="nome_roteiro" value="{{ roteiro.titulo }}">
+
+                                       
+                                        <div class="form-group">
+                                            <label>Gêneros</label>
+
+                                            {% for  genero in totalGeneros %}
+
+                                                {% if genero.genero in roteiro.generos %}
+                                                <label class="checkbox-inline">
+                                                    <input name="{{ genero.genero}}"  type="checkbox" checked>{{ genero.genero }}
+                                                </label>
+                                                {% else %}
+                                                <label class="checkbox-inline">
+                                                    <input name="{{ genero.genero }}"  type="checkbox" >{{ genero.genero }}
+                                                </label>
+                                                {% endif %}
+                                            {% endfor %}
+
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                            <label>Palavras-chave</label>
+                                            <input type="text" class="form-control" id="tokenfield" name="tokenfield" value="{{ palavra_chave }}" >
+                                        </div>
+                                        </div>
+
+                                      <input type="submit" class="btn btn-default"></input>
+{#                                        <button class="btn btn-default" onclick="editarRoteiro();">Editar</button>#}
+                                    </form>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap-tokenfield.js"></script>
+    <script src="/static/js/script.js"></script>
+
+   <script>
+                $('#tokenfield').tokenfield({
+                        autocomplete: {
+                        source: ['bullying','medieval','carros'],
+                        delay: 100
+                    },
+                 showAutocompleteOnFocus: true
+                })
+
+
+                $('#tokenfield').tokenfield();
+    </script>
+
+</body>
+</html>
