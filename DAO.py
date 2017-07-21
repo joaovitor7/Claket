@@ -139,3 +139,4 @@ class PalavraChaveDAO():
         tabelaPalavraChave = TabelaPalavraChave.query.filter_by(id=id).first()
         palavraChave= PalavraChave(tabelaPalavraChave.id,tabelaPalavraChave.palavra)
         return palavraChave
+
