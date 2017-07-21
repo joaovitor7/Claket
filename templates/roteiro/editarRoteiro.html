@@ -105,7 +105,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">{{ roteiro.titulo}}</h1>
+                    <h1 class="page-header">{{ roteiro.getTitulo() }}</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -115,7 +115,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            {{ roteiro.titulo }}
+                            {{ roteiro.getTitulo() }}
                         </div>
                         <div class="panel-body">
                             <div class="row">
@@ -124,21 +124,21 @@
 
 
                                         <label>Nome</label>
-                                            <input class="form-control" name="nome_roteiro" value="{{ roteiro.titulo }}">
+                                            <input class="form-control" name="nome_roteiro" value="{{ roteiro.getTitulo() }}">
 
                                        
                                         <div class="form-group">
                                             <label>Gêneros</label>
 
-                                            {% for  genero in totalGeneros %}
+                                            {% for generoTemp in totalGeneros %}
 
-                                                {% if genero.genero in roteiro.generos %}
+                                                {% if generoTemp in roteiro.getGeneros() %}
                                                 <label class="checkbox-inline">
-                                                    <input name="{{ genero.genero}}"  type="checkbox" checked>{{ genero.genero }}
+                                                    <input name="{{ generoTemp}}"  type="checkbox" checked>{{ generoTemp }}
                                                 </label>
                                                 {% else %}
                                                 <label class="checkbox-inline">
-                                                    <input name="{{ genero.genero }}"  type="checkbox" >{{ genero.genero }}
+                                                    <input name="{{ generoTemp }}"  type="checkbox" >{{ generoTemp }}
                                                 </label>
                                                 {% endif %}
                                             {% endfor %}

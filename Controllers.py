@@ -1,6 +1,7 @@
 from Claket import app
 from DATABASE import *
 from Dominio import *
+from Utils import juntarPalavras
 from DAO import *
 from flask import render_template, request, url_for, redirect
 
@@ -13,33 +14,35 @@ def index():
 @app.route("/cadastrarRoteiro")
 def cadastrarRoteiro():
 
-    return render_template("roteiro/formularioRoteiro.html")
+    generos = GeneroDAO.getGeneros()
+    return render_template("roteiro/formularioRoteiro.html", generos = generos)
 
 
 @app.route("/cadastroRoteiro", methods=["GET", "POST"])
 def cadastroRoteiro():
     if (request.method == "POST"):
+        id=None
         titulo = request.form.get("nome_roteiro")
-        generos = ['Acao', 'Drama', 'Aventura', 'Terror']
-        palavras_chave = request.form.get("tokenfield")
-        resultado_genero = []
-        resultado_palavrachave = []
-        for genero in generos:
-            if request.form.get(genero) == 'on':
-                resultado_genero.append(genero)
+        generos = GeneroDAO.getGeneros()
+        palavrasChave = request.form.get("tokenfield")
+        resultadoGenero = []
+        resultadoPalavraChave = []
+        for generoTemp in generos:
+            if request.form.get(generoTemp) == 'on':
+                resultadoGenero.append(generoTemp)
 
-        palavras_chave = palavras_chave.split(", ")
-        for palavra in palavras_chave:
-            resultado_palavrachave.append(palavra)
+        palavrasChave = palavrasChave.split(", ")
+        for palavraTemp in palavrasChave:
+            palavraChave = PalavraChave(id,palavraTemp)
+            resultadoPalavraChave.append(palavraChave)
 
-        if (titulo and resultado_genero and resultado_palavrachave and palavras_chave):
-            roteiro=Roteiro(titulo, resultado_palavrachave, resultado_genero)
-            usuario=Usuario('nome','email','senha',[],'23456789', 1, '1990/12/12')
 
-            #roteiroDAO=RoteiroDAO(roteiro,usuario)
+        roteiro=Roteiro(id,titulo, resultadoPalavraChave, resultadoGenero)
+        usuario=Usuario('nome','email','senha',[],'23456789', 1, '1990/12/12')
 
-            if RoteiroDAO.inserir(roteiro,usuario):
-                return render_template("index.html")
+
+        if RoteiroDAO.inserir(roteiro,usuario):
+            return render_template("index.html")
 
     return render_template("index.html")
 
@@ -51,15 +54,15 @@ def listarRoteiros():
 
 @app.route("/excluirRoteiro/<int:id>")
 def excluirRoteiro(id):
+    
     RoteiroDAO.excluir(id)
     return listarRoteiros()
 
 
 
-
-
 @app.route("/formularioUsuario",)
 def cadastroUsuario():
+
     return render_template('roteiro/formularioUsuario.html')
 
 
@@ -71,22 +74,26 @@ def editarRoteiro(id):
 
     if (request.method == "POST"):
         titulo = request.form.get("nome_roteiro")
-        generos = ['Acao', 'Drama', 'Aventura', 'Terror']
-        palavras_chave = request.form.get("tokenfield")
-        resultado_genero = []
-        resultado_palavrachave = []
-        for genero in generos:
-            if request.form.get(genero) == 'on':
-                resultado_genero.append(genero)
-
-        palavras_chave = palavras_chave.split(", ")
-        for palavra in palavras_chave:
-            resultado_palavrachave.append(palavra)
-
-        roteiro = Roteiro(titulo, resultado_palavrachave, resultado_genero)
+        generos = GeneroDAO.getGeneros()
 
 
-        RoteiroDAO.editar(id,roteiro)
+        palavrasChave = request.form.get("tokenfield")
+        resultadoGenero = []
+        resultadoPalavraChave = []
+        for generoTemp in generos:
+            if request.form.get(generoTemp) == 'on':
+                resultadoGenero.append(generoTemp)
+
+        palavras_chave = palavrasChave.split(", ")
+
+        for palavraTemp in palavras_chave:
+            palavraChave = PalavraChave(id, palavraTemp)
+            resultadoPalavraChave.append(palavraChave)
+
+        roteiro = Roteiro(id,titulo, resultadoPalavraChave, resultadoGenero)
+
+
+        RoteiroDAO.editar(roteiro)
 
         return listarRoteiros()
 
@@ -94,18 +101,19 @@ def editarRoteiro(id):
     elif (request.method == "GET"):
 
 
-        def separarPalavras(palavras):
-
-            palavrasChave=""
-            for x in palavras:
-                palavrasChave+=x+ ", "
-
-            palavrasChave=palavrasChave[0:-2]
-            return palavrasChave
-
-        palavras=separarPalavras(roteiro.palavras_Chaves)
-
-        totalGeneros=GeneroDAO.getGeneros()
 
 
-        return render_template("roteiro/editarRoteiro.html", roteiro=roteiro,palavra_chave=palavras, totalGeneros=totalGeneros)
+        palavras = juntarPalavras(roteiro.getPalavrasChave())
+
+        totalGeneros = GeneroDAO.getGeneros()
+
+
+        return render_template("roteiro/editarRoteiro.html", roteiro = roteiro ,palavra_chave = palavras, totalGeneros = totalGeneros)
+
+
+@app.route("/detalharRoteiro/<int:id>")
+def detalharRoteiro(id):
+    roteiro = RoteiroDAO.getRoteiro(id)
+
+    palavrasChaves = juntarPalavras(roteiro.getPalavrasChave())
+    return render_template("roteiro/detalharRoteiro.html", roteiro = roteiro)

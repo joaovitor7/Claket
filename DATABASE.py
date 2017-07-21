@@ -7,9 +7,9 @@ from sqlalchemy.orm import relationship
 class TabelaPlano(db.Model):
     __tablename__ = 'Plano'
 
-    id= db.Column(db.INT(),primary_key=True, nullable=False)
-    preco= db.Column(db.FLOAT(),nullable=False)
-    nome= db.Column(db.VARCHAR(45),nullable=False)
+    id = db.Column(db.INT(), primary_key=True, nullable=False)
+    preco= db.Column(db.FLOAT(), nullable=False)
+    nome= db.Column(db.VARCHAR(45), nullable=False)
     img= db.Column(db.VARCHAR(45), nullable=False)
     qtd_total_roteiros= db.Column(db.INT(), nullable=False)
 
@@ -21,7 +21,6 @@ class TabelaPlano(db.Model):
         self.qtd_total_roteiros=qtd_total_roteiros
 
 
-
 class TabelaUsuario(db.Model):
     __tablename__ = 'Usuario'
 
@@ -29,42 +28,38 @@ class TabelaUsuario(db.Model):
     email = db.Column(db.VARCHAR(45), nullable=False)
     senha = db.Column(db.VARCHAR(45), nullable=False)
     nome = db.Column(db.VARCHAR(45), nullable=False)
-    qtd_roteiros_avaliados=db.Column(db.INT())
-    data_aquisicao_plano=db.Column(db.DATE(), nullable=False)
-    id_plano=db.Column(db.INT(), ForeignKey('Plano.id'), nullable=False)
+    qtd_roteiros_avaliados = db.Column(db.INT())
+    data_aquisicao_plano = db.Column(db.DATE(), nullable = False)
+    id_plano = db.Column(db.INT(), ForeignKey('Plano.id'), nullable = False)
 
     fk_id_plano = relationship(TabelaPlano, foreign_keys=[id_plano])
 
-    def __init__(self, cpf, email, senha, nome, qtd_roteiros_avaliados, qtd_total_roteiros, id_plano):
+    def __init__(self, cpf, email, senha, nome, qtd_roteiros_avaliados, qtd_total_roteiros, data_aquisicao_plano, id_plano):
         self.cpf = cpf
         self.email = email
         self.senha = senha
         self.nome = nome
-        self.qtd_roteiros_avaliados= qtd_roteiros_avaliados
-        self.data_aquisicao_plano= data_aquisicao_plano
-        self.id_plano= id_plano
-
-
-
-
+        self.qtd_roteiros_avaliados = qtd_roteiros_avaliados
+        self.data_aquisicao_plano = data_aquisicao_plano
+        self.id_plano = id_plano
 
 
 class TabelaGenero(db.Model):
     __tablename__ = 'Genero'
 
-    id = db.Column(db.INT(), primary_key=True)
-    genero = db.Column(db.VARCHAR(45), nullable=False)
+    id = db.Column(db.INT(), primary_key = True)
+    genero = db.Column(db.VARCHAR(45), nullable = False)
 
     def __init__(self, id, genero):
         self.id = id
         self.genero = genero
 
 
-class TabelaPalavra_Chave(db.Model):
+class TabelaPalavraChave(db.Model):
     __tablename__ = 'PalavraChave'
 
-    id = db.Column(db.INT(), primary_key=True , nullable=False)
-    palavra = db.Column(db.VARCHAR(45), nullable=False)
+    id = db.Column(db.INT(), primary_key = True , nullable = False)
+    palavra = db.Column(db.VARCHAR(45), nullable = False)
 
     def __init__(self, id, palavra):
         self.id = id
@@ -74,13 +69,13 @@ class TabelaPalavra_Chave(db.Model):
 class TabelaRoteiro(db.Model):
     __tablename__ = 'Roteiro'
 
-    id = db.Column(db.INT(), primary_key=True)
-    titulo = db.Column(db.VARCHAR(45), nullable=False)
-    aceitacao = db.Column(db.VARCHAR(45), nullable=False)
-    id_usuario = db.Column(db.VARCHAR(45), ForeignKey('Usuario.cpf'), nullable=False)
-    data_avaliacao= db.Column(db.DATE(), nullable=False)
+    id = db.Column(db.INT(), primary_key = True)
+    titulo = db.Column(db.VARCHAR(45), nullable = False)
+    aceitacao = db.Column(db.VARCHAR(45), nullable = False)
+    id_usuario = db.Column(db.VARCHAR(45), ForeignKey('Usuario.cpf'), nullable = False)
+    data_avaliacao= db.Column(db.DATE(), nullable = False)
 
-    id_Usuario_Roteiro = relationship(TabelaUsuario, foreign_keys=[id_usuario])
+    id_Usuario_Roteiro = relationship(TabelaUsuario, foreign_keys = [id_usuario])
 
     def __init__(self, id, titulo, aceitacao, id_usuario, data_avaliacao):
         self.id = id
@@ -91,25 +86,25 @@ class TabelaRoteiro(db.Model):
 
 
 
-class TabelaRoteiro_Palavrachave(db.Model):
+class TabelaRoteiroPalavraChave(db.Model):
     __tablename__ = 'RoteiroPalavraChave'
 
     id_roteiro = db.Column(db.INT(), ForeignKey('Roteiro.id'), nullable=False, primary_key=True)
     id_palavra_chave = db.Column(db.INT(), ForeignKey('PalavraChave.id'), nullable=False, primary_key=True)
 
-    id_Roteiro = relationship(TabelaRoteiro, foreign_keys=[id_roteiro])
-    id_Palavra_Chave = relationship(TabelaPalavra_Chave, foreign_keys=[id_palavra_chave])
+    id_Roteiro = relationship(TabelaRoteiro, foreign_keys = [id_roteiro])
+    id_Palavra_Chave = relationship(TabelaPalavraChave, foreign_keys = [id_palavra_chave])
 
     def __init__(self, id_roteiro, id_palavra_chave):
         self.id_roteiro = id_roteiro
         self.id_palavra_chave = id_palavra_chave
 
 
-class TabelaRoteiro_Genero(db.Model):
+class TabelaRoteiroGenero(db.Model):
     __tablename__ = 'RoteiroGenero'
 
-    id_roteiro = db.Column(db.INT(), ForeignKey('Roteiro.id'), nullable=False, primary_key=True)
-    id_genero = db.Column(db.INT(), ForeignKey('Genero.id'), nullable=False, primary_key=True)
+    id_roteiro = db.Column(db.INT(), ForeignKey('Roteiro.id'), nullable = False, primary_key = True)
+    id_genero = db.Column(db.INT(), ForeignKey('Genero.id'), nullable = False, primary_key = True)
 
     id_Roteiro = relationship(TabelaRoteiro, foreign_keys=[id_roteiro])
     id_Genero = relationship(TabelaGenero, foreign_keys=[id_genero])
@@ -122,22 +117,22 @@ class TabelaRoteiro_Genero(db.Model):
 class TabelaSentimento(db.Model):
     __tablename__ = 'Sentimento'
 
-    id = db.Column(db.INT(), primary_key=True, nullable=False)
-    sentimento = db.Column(db.VARCHAR(45), nullable=False)
+    id = db.Column(db.INT(), primary_key = True, nullable = False)
+    sentimento = db.Column(db.VARCHAR(45), nullable = False)
 
     def __init__(self, id, sentimento):
         self.id = id
         self.sentimento = sentimento
 
 
-class TabelaSentimento_Palavrachave(db.Model):
+class TabelaSentimentoPalavraChave(db.Model):
     __tablename__ = 'SentimentoPalavraChave'
 
-    id_sentimento = db.Column(db.INT(), ForeignKey('Sentimento.id'), primary_key=True, nullable=False)
-    id_palavrachave = db.Column(db.INT(), ForeignKey('PalavraChave.id'), primary_key=True, nullable=False)
+    id_sentimento = db.Column(db.INT(), ForeignKey('Sentimento.id'), primary_key = True, nullable = False)
+    id_palavrachave = db.Column(db.INT(), ForeignKey('PalavraChave.id'), primary_key = True, nullable = False)
 
-    id_Sentimento = relationship(TabelaSentimento, foreign_keys=[id_sentimento])
-    id_Palavrachave = relationship(TabelaPalavra_Chave, foreign_keys=[id_palavrachave])
+    id_Sentimento = relationship(TabelaSentimento, foreign_keys = [id_sentimento])
+    id_Palavrachave = relationship(TabelaPalavraChave, foreign_keys = [id_palavrachave])
 
     def __init__(self, id_sentimento, id_palavrachave):
         self.id_sentimento = id_sentimento
@@ -145,15 +140,15 @@ class TabelaSentimento_Palavrachave(db.Model):
 
 
 class TabelaTweet(db.Model):
-    __tablename__ = 'tweet'
+    __tablename__ = 'Tweet'
 
-    id = db.Column(db.INT(), primary_key=True, nullable=False)
-    texto = db.Column(db.VARCHAR(200), nullable=False)
-    data = db.Column(db.VARCHAR(45), nullable=False)
-    id_sentimento = db.Column(db.INT(), ForeignKey('Sentimento.id'), nullable=False)
+    id = db.Column(db.INT(), primary_key = True, nullable = False)
+    texto = db.Column(db.VARCHAR(200), nullable = False)
+    data = db.Column(db.VARCHAR(45), nullable = False)
+    id_sentimento = db.Column(db.INT(), ForeignKey('Sentimento.id'), nullable = False)
 
 
-    fk_id_sentimento = relationship(TabelaSentimento, foreign_keys=[id_sentimento])
+    fk_id_sentimento = relationship(TabelaSentimento, foreign_keys = [id_sentimento])
 
     def __init__(self, id, texto, data, sentimento):
         self.id = id
@@ -161,17 +156,16 @@ class TabelaTweet(db.Model):
         self.data = data
         self.sentimento= sentimento
         
-"""
-class TabelaTweet_Palavrachave(db.Model):
+
+class TabelaTweetPalavrachave(db.Model):
     __tablename__ = 'TweetPalavraChave'
 
-    idtweet = db.Column(db.INT(), ForeignKey('Tweet.id'), nullable=False, primary_key=True)
-    idpalavrachave = db.Column(db.INT(), ForeignKey('PalavraChave.id'), nullable=False, primary_key=True)
+    id_tweet = db.Column(db.INT(), ForeignKey('Tweet.id'), nullable = False, primary_key = True)
+    id_palavra_chave = db.Column(db.INT(), ForeignKey('PalavraChave.id'), nullable = False, primary_key = True)
 
-    id_Tweet = relationship(TabelaTweet, foreign_keys=[idtweet])
-    id_Palavra_Chave = relationship(TabelaPalavra_Chave, foreign_keys=[idpalavrachave])
+    id_Tweet = relationship(TabelaTweet, foreign_keys = [id_tweet])
+    id_Palavra_Chave = relationship(TabelaPalavraChave, foreign_keys = [id_palavra_chave])
 
-    def __init__(self, idtweet, idpalavrachave):
-        self.idtweet = idtweet
-        self.idpalavrachave = idpalavrachave
-"""
+    def __init__(self, id_tweet, id_palavrachave):
+        self.id_tweet = id_tweet
+        self.id_palavrachave = id_palavrachave

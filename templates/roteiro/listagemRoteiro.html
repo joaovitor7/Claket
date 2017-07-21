@@ -121,11 +121,11 @@
                         </thead>
                         {%  for roteiro in roteiros %}
                         <tr>
-                            <td>{{ roteiro.titulo }}</td>
+                            <td><a href="/detalharRoteiro/{{ roteiro.getId() }}" >{{ roteiro.getTitulo() }}</a></td>
                             <td>dd/mm/aaaa</td>
-                            <td>{{ roteiro.aceitacao }}</td>
-                            <td><a href="/editarRoteiro/{{roteiro.id}}">Editar</a></td>
-                            <td><a href="/excluirRoteiro/{{ roteiro.id }}">X</a></td>
+                            <td>{{ roteiro.getAceitacao() }}</td>
+                            <td><a href="/editarRoteiro/{{roteiro.getId()}}">Editar</a></td>
+                            <td><a href="/excluirRoteiro/{{ roteiro.getId() }}">X</a></td>
 
                             
                             
