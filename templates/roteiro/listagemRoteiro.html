@@ -56,7 +56,7 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Configurações</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i>Sair</a>
+                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i>Sair</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -69,7 +69,7 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu"> 
                         <li>
-                            <a href="#">Planos</a>
+                            <a href="{{url_for("planos")}}">Planos</a>
                         </li>
                         <li>
                             <a href="#"></i>Roteiros<span class="fa arrow"></span></a>
@@ -107,7 +107,7 @@
             <!-- /.row -->
             <div class="row">
                 {{myContent}}
-                    <table class="table">
+                    <table class="table table-bordered">
                         <thead class="thead-default">
                             <tr>
                                 <th align="center"><h3>Roteiro</h3></th>
@@ -126,9 +126,6 @@
                             <td>{{ roteiro.getAceitacao() }}</td>
                             <td><a href="/editarRoteiro/{{roteiro.getId()}}">Editar</a></td>
                             <td><a href="/excluirRoteiro/{{ roteiro.getId() }}">X</a></td>
-
-                            
-                            
                         </tr>
                         {% endfor %}
                 </table>

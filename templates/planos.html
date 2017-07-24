@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Planos</title>
+
+    <link rel="stylesheet"
+      href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet"
+      href="/static/css/bootstrap-tokenfield.min.css">
+    <link rel="stylesheet"
+      href="/static/css/style.css">
+    <!-- Custom Fonts -->
+    <link rel="stylesheet"
+      href="/static/css/font-awesome.min.css">
+
+    <style>
+          /*.txt-centered {  text-align: center;  }*/
+          .aEsquerda {  float: left;  }
+          .aDireita {  float: right;  }
+          #botaoSalvar {  align-items: baseline; overflow: auto }
+
+
+        div.clear{  clear: both;  }
+        div.product-chooser{  }
+
+        div.product-chooser.disabled div.product-chooser-item
+        {
+            zoom: 1;
+            filter: alpha(opacity=60);
+            opacity: 0.6;
+            cursor: default;
+        }
+
+        div.product-chooser div.product-chooser-item{
+            padding: 11px;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            border: 1px solid #efefef;
+            margin-bottom: 10px;
+            margin-left: 10px;
+            margin-right: 10x;
+        }
+        
+        div.product-chooser div.product-chooser-item.selected{
+            border: 4px solid #428bca;
+            background: #efefef;
+            padding: 8px;
+            filter: alpha(opacity=100);
+            opacity: 1;
+        }
+        
+        div.product-chooser div.product-chooser-item img{  padding: 0;  }
+        
+        div.product-chooser div.product-chooser-item span.title{
+            display: block;
+            margin: 10px 0 5px 0;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        div.product-chooser div.product-chooser-item span.description{  font-size: 12px;  }
+        
+        div.product-chooser div.product-chooser-item input{
+            position: absolute;
+            left: 0;
+            top: 0;
+            visibility:hidden;
+        }
+
+    </style>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript">        
+
+    </script>
+
+</head>
+
+<body>
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Claket</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+               
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i>Perfil</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i>Configurações</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i>Sair</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu"> 
+                        <li>
+                            <a href="/planos">Planos</a>
+                        </li>
+                        <li>
+                            <a href="#"></i>Roteiros<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{url_for("listarRoteiros")}}">Meus Roteiros</a>
+                                </li>
+                                <li>
+                                    <a href="{{url_for("cadastrarRoteiro")}}">Cadastrar Roteiro</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#">Configurações</a>
+                        </li>
+                        <li>
+                            <a href="#">Sair</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+<form name='form' action="\editarPlano" method="post">
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12 page-header">
+                    <h1 class="aEsquerda">Planos</h1>
+                    <div class="aDireita">
+                        <button class="btn btn-default" id="botaoSalvar">Salvar</button>
+                    </div>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+            <!-- /.row -->
+            <div class="row">
+                <div class="container col-lg-12">
+                    <div class="row form-group product-chooser">
+                        
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-lg-4">
+                            <div class="product-chooser-item">
+                                <img src="/static/img/ratatoulliee.jpeg" class="img-rounded col-xs-4 col-sm-4 col-md-12 col-lg-12" alt="Ratatouille">
+                                <div class="col-xs-8 col-sm-8 col-md-12 col-lg-12">
+                                    <span class="title">Ratatouille</span>
+                                    <span class="description">1 avaliação-Degustação grátis</span>
+                                    <input type="radio" name="plano" value="0">
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-lg-4">
+                            <div class="product-chooser-item">
+                                <img src="/static/img/lagoaAzull.jpeg" class="img-rounded col-xs-4 col-sm-4 col-md-12 col-lg-12" alt="Lagoa Azul">
+                                <div class="col-xs-8 col-sm-8 col-md-12 col-lg-12">
+                                    <span class="title">Lagoa Azul</span>
+                                    <span class="description">3 avaliações por mês-R$250,00</span>
+                                    <input type="radio" name="plano" value="1">
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-lg-4">
+                            <div class="product-chooser-item">
+                                <img src="/static/img/jumperr.jpeg" class="img-rounded col-xs-4 col-sm-4 col-md-12 col-lg-12" alt="Jumper">
+                                <div class="col-xs-8 col-sm-8 col-md-12 col-lg-12">
+                                    <span class="title">Jumper</span>
+                                    <span class="description">6 avaliações por mês - R$450,00</span>
+                                    <input type="radio" name="plano" value="2">
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-lg-4">
+                            <div class="product-chooser-item">
+                                <img src="/static/img/interestelarr.jpeg" class="img-rounded col-xs-4 col-sm-4 col-md-12 col-lg-12" alt="Interestelar">
+                                <div class="col-xs-8 col-sm-8 col-md-12 col-lg-12">
+                                    <span class="title">Interestelar</span>
+                                    <span class="description">12 avaliações por mês-R$850,00</span>
+                                    <input type="radio" name="plano" value="3">
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-lg-4">
+                            <div class="product-chooser-item">
+                                <img src="/static/img/theGodFatherr.jpeg" class="img-rounded col-xs-4 col-sm-4 col-md-12 col-lg-12" alt="The Godfather">
+                                <div class="col-xs-8 col-sm-8 col-md-12 col-lg-12">
+                                    <span class="title">The Godfather</span>
+                                    <span class="description">Quantidade ilimitada de avaliações-R$10.000,00</span>
+                                    <input type="radio" name="plano" value="4">
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+</form>
+
+    </div>
+    <!-- /#wrapper -->
+
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap-tokenfield.js"></script>
+    <script src="/static/js/script.js"></script>
+
+   <script>
+        $(function(){
+    $('div.product-chooser').not('.disabled').find('div.product-chooser-item').on('click', function(){
+        $(this).parent().parent().find('div.product-chooser-item').removeClass('selected');
+        $(this).addClass('selected');
+        $(this).find('input[type="radio"]').prop("checked", true);
+        
+    });
+});
+    </script>
+
+</body>
+</html>

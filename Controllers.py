@@ -10,6 +10,16 @@ from flask import render_template, request, url_for, redirect
 def index():
     return render_template("index.html")
 
+@app.route('/planos')
+def planos():
+    return render_template("planos.html")
+
+@app.route('/editarPlano', methods=["POST"])
+def setPlanos():
+    idPlano = request.form.get("plano")
+
+    UsuarioDAO.setPlano('23456789', idPlano)
+    return render_template("planos.html")
 
 @app.route("/cadastrarRoteiro")
 def cadastrarRoteiro():
@@ -59,7 +69,6 @@ def excluirRoteiro(id):
     return listarRoteiros()
 
 
-
 @app.route("/formularioUsuario",)
 def cadastroUsuario():
 
@@ -99,8 +108,6 @@ def editarRoteiro(id):
 
 
     elif (request.method == "GET"):
-
-
 
 
         palavras = juntarPalavras(roteiro.getPalavrasChave())

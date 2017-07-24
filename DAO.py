@@ -140,3 +140,8 @@ class PalavraChaveDAO():
         palavraChave= PalavraChave(tabelaPalavraChave.id,tabelaPalavraChave.palavra)
         return palavraChave
 
+class UsuarioDAO():
+    def setPlano(idUsuario, idPlano):
+        tabelaUsuario =  TabelaUsuario.query.filter_by(cpf = idUsuario).first()
+        tabelaUsuario.id_plano = idPlano
+        db.session.commit()

@@ -33,7 +33,7 @@ class Roteiro():
 	def __init__(self, id, titulo, palavrasChaves, generos, aceitacao = '0', dataAvaliacao = '1990/12/12'):
 		self.__id = id
 		self.__titulo = titulo
-		self.__aceitacao = aceitacao
+		self.__aceitacao = randint(0, 10)
 		self.__palavrasChaves = palavrasChaves
 		self.__dataAvaliacao = dataAvaliacao
 		self.__generos = generos
