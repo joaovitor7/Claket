@@ -3,7 +3,7 @@ from DATABASE import *
 from Dominio import *
 from Utils import juntarPalavras
 from DAO import *
-from flask import render_template, request, url_for, redirect
+from flask import render_template, request, url_for, redirect, json
 
 
 @app.route('/')
@@ -52,9 +52,9 @@ def cadastroRoteiro():
 
 
         if RoteiroDAO.inserir(roteiro,usuario):
-            return render_template("index.html")
+            return listarRoteiros()
 
-    return render_template("index.html")
+    return listarRoteiros()
 
 
 @app.route("/listagemRoteiro")

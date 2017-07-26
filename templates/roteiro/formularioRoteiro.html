@@ -19,6 +19,9 @@
     <!-- Custom Fonts -->
     <link rel="stylesheet"
       href="/static/css/font-awesome.min.css">
+      <link rel="stylesheet"
+      href="/static/css/sweetalert.css">
+      <script src="/static/js/sweetalert.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -27,20 +30,46 @@
     <![endif]-->
 
     <script type="text/javascript">
-    function cadastrarRoteiro(){
-            $.ajax({
-                      type: "POST",
-                      url: "{{ url_for('cadastroRoteiro') }}",
-                      data: { 
-                                nome_roteiro: document.form.nome_roteiro.value, 
-                                tokenfield: document.form.tokenfield.value,
-                                genero: document.form.genero.value
-                            },
-                      success:  function(retorno) {  $('#aviso').html(retorno); alert("Boaa Mulequee")  },
-                      error:     function()  {  alert("Deu pra trás");  },
-                   }); 
-        }
-        
+    function validarRoteiro(){
+            if(document.myForm.nome_roteiro.value != "")
+                cadastrarRoteiro();
+            else
+                    swal({
+                        title: "Valor inválido!",
+                        text: "Você deve preencher os campos corretamente!",
+                        type: "warning",
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: true
+                    });
+                    
+            }
+        function cadastrarRoteiro(){
+                $.ajax({
+                          type: "POST",
+                          url: "/cadastroRoteiro",
+                          data: $('form').serialize(),
+                          success:  function(retorno) {
+                                        swal({
+                                        title: "Cadastrado!",
+                                                text: "Registro cadastrado com sucesso!",
+                                                type: "success",
+                                                showCancelButton: false,
+                                                confirmButtonText: "Ok",
+                                                closeOnConfirm: true },
+                                                function(){  window.location.replace("/listagemRoteiro");
+                                        });
+                                    },
+                          error:  function()  {  
+                                    swal({
+                                            title: "Valor inválido!",
+                                            text: "Você deve preencher os campos corretamente!",
+                                            type: "warning",
+                                            confirmButtonText: "Ok",
+                                            closeOnConfirm: true
+                                    });
+                                },
+                }); 
+            }
     </script>
 </head>
 
@@ -121,7 +150,7 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-<!-- <div id="aviso"></div> -->
+
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
@@ -132,7 +161,7 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form role="form" name="form" action="{{ url_for('cadastroRoteiro') }}" method="post">
+                                    <form role="form" name="myForm" method="post">
 
                                         <div class="form-group">
                                             <label>Nome</label>
@@ -157,8 +186,7 @@
                                         </div>
                                         </div>
 
-                                        <!--input type="submit" class="btn btn-default"></input-->
-                                        <button class="btn btn-default" onclick="cadastrarRoteiro();">Cadastrar</button>
+                                        <button type="button" class="btn btn-default" onclick="validarRoteiro();">Cadastrar</button>
                                         <button type="reset" class="btn btn-default">Limpar campos</button>
                                     </form>
                                 </div>
