@@ -62,11 +62,16 @@ def listarRoteiros():
     roteiros = RoteiroDAO.listar('23456789')
     return render_template("roteiro/listagemRoteiro.html", roteiros=roteiros)
 
-@app.route("/excluirRoteiro/<int:id>")
-def excluirRoteiro(id):
+@app.route("/excluirRoteiro/<int:idRoteiro>", methods=["GET", "POST"])
+def excluirRoteiro(idRoteiro):
+
+    # jsonData = request.get_json(force=True, silent=False, cache=True)
+    # print(jsonData['idRoteiro'])
+
+    # idRoteiro = jsonData['idRoteiro']
     
-    RoteiroDAO.excluir(id)
-    return listarRoteiros()
+    RoteiroDAO.excluir(idRoteiro)
+    return redirect(url_for('listarRoteiros'))
 
 
 @app.route("/formularioUsuario",)
@@ -104,6 +109,7 @@ def editarRoteiro(id):
 
         RoteiroDAO.editar(roteiro)
 
+        # return redirect(url_for('listarRoteiros'))
         return listarRoteiros()
 
 
