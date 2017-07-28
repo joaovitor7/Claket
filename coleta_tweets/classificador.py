@@ -3,7 +3,7 @@ from textblob.classifiers import NaiveBayesClassifier
 from textblob import TextBlob
 import csv
 import pickle
-
+"""
 with open("tweets_filmes_palavras.tsv", encoding="utf-8", newline='') as f:
     dialeto = csv.Sniffer().sniff(f.read(1024), delimiters="\t")
     f.seek(0)
@@ -29,7 +29,7 @@ with open("trained.pickle", "rb") as f:
         resultado = TextBlob(query, classifier=cl)
         print(resultado.classify())
 
-"""
+
 """
 with open("trained.pickle", "rb") as f:
     cl = pickle.load(f)
