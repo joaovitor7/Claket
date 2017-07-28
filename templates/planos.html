@@ -19,6 +19,9 @@
     <!-- Custom Fonts -->
     <link rel="stylesheet"
       href="/static/css/font-awesome.min.css">
+      <link rel="stylesheet"
+      href="/static/css/sweetalert.css">
+      <script src="/static/js/sweetalert.min.js"></script>
 
     <style>
           /*.txt-centered {  text-align: center;  }*/
@@ -83,8 +86,47 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <script type="text/javascript">        
-
+    <script type="text/javascript">
+    function validarRoteiro(){
+            if(document.myForm.plano.value != "")
+                cadastrarPlano();
+            else
+                    swal({
+                        title: "Valor inválido!",
+                        text: "Você deve selecionar um plano!",
+                        type: "warning",
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: true
+                    });
+                    
+            }
+        function cadastrarPlano(){
+                $.ajax({
+                          type: "POST",
+                          url: "/editarPlano",
+                          data: $('form').serialize(),
+                          success:  function(retorno) {
+                                        swal({
+                                        title: "Cadastrado!",
+                                                text: "Registro cadastrado com sucesso!",
+                                                type: "success",
+                                                showCancelButton: false,
+                                                confirmButtonText: "Ok",
+                                                closeOnConfirm: true }
+                                                // ,function(){  window.location.replace("/listagemRoteiro");}
+                                              );
+                                    },
+                          error:  function()  {  
+                                    swal({
+                                            title: "Valor inválido!",
+                                            text: "Você deve preencher os campos corretamente!",
+                                            type: "warning",
+                                            confirmButtonText: "Ok",
+                                            closeOnConfirm: true
+                                    });
+                                },
+                }); 
+            }
     </script>
 
 </head>
@@ -159,13 +201,13 @@
             <!-- /.navbar-static-side -->
         </nav>
 
-<form name='form' action="\editarPlano" method="post">
+<form name='myForm' method="post">
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12 page-header">
                     <h1 class="aEsquerda">Planos</h1>
                     <div class="aDireita">
-                        <button class="btn btn-default" id="botaoSalvar">Salvar</button>
+                        <button type="button" class="btn btn-default" id="botaoSalvar" onclick="validarRoteiro();">Salvar</button>
                     </div>
                 </div>
                 <!-- /.col-lg-12 -->

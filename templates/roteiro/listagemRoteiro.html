@@ -19,6 +19,41 @@
     <!-- Custom Fonts -->
     <link rel="stylesheet"
       href="/static/css/font-awesome.min.css">
+      <link rel="stylesheet"
+      href="/static/css/sweetalert.css">
+
+      <script src="/static/js/sweetalert.min.js"></script>
+
+      <style type="text/css">  .centered{  text-align:center;  }  </style>
+
+
+      <script type="text/javascript">
+                            //editarRoteiro/id
+                            ///excluirRoteiro/id
+
+        function editar(idRoteiro){
+            window.location.href = "editarRoteiro/"+String(idRoteiro);
+        }
+
+
+        function excluir(idRoteiro)
+        {
+
+            swal({
+                      title: "Tem certeza ?",
+                      text: "Você não terá acesso a esse registro novamente!",
+                      type: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#DD6B55",
+                      confirmButtonText: "Sim, remova-o!",
+                      closeOnConfirm: false
+                  },
+                  function()
+                  {  window.location.href = "excluirRoteiro/"+String(idRoteiro);  });
+
+        }
+      </script>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -110,22 +145,19 @@
                     <table class="table table-bordered">
                         <thead class="thead-default">
                             <tr>
-                                <th align="center"><h3>Roteiro</h3></th>
-                                <th align="center"><h3>Data da Avaliação</h3></th>
-                                <th align="center"><h3>Nota</h3></th>
-                                <th align="center"><h3>Editar</h3></th>
-                                <th align="center"><h3>Excluir</h3></th>
-
+                                <th class="centered"><h3>Roteiro</h3></th>
+                                <th class="centered"><h3>Data da Avaliação</h3></th>
+                                <th class="centered"><h3>Nota</h3></th>
                                 
                             </tr>
                         </thead>
                         {%  for roteiro in roteiros %}
-                        <tr>
+                        <tr class="centered">
                             <td><a href="/detalharRoteiro/{{ roteiro.getId() }}" >{{ roteiro.getTitulo() }}</a></td>
                             <td>dd/mm/aaaa</td>
                             <td>{{ roteiro.getAceitacao() }}</td>
-                            <td><a href="/editarRoteiro/{{roteiro.getId()}}">Editar</a></td>
-                            <td><a href="/excluirRoteiro/{{ roteiro.getId() }}">X</a></td>
+                            <td><button class="btn btn-default btn-primary" onclick="editar('{{roteiro.getId()}}');">Editar</button></td>
+                            <td><button class="btn btn-default btn-danger" onclick="excluir('{{roteiro.getId()}}');">Excluir</button></td>
                         </tr>
                         {% endfor %}
                 </table>

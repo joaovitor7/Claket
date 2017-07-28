@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Cadastro de Roteiro</title>
+    <title>Edição de Roteiro</title>
 
     <link rel="stylesheet"
       href="/static/css/bootstrap.min.css">
@@ -19,6 +19,9 @@
     <!-- Custom Fonts -->
     <link rel="stylesheet"
       href="/static/css/font-awesome.min.css">
+      <link rel="stylesheet"
+      href="/static/css/sweetalert.css">
+      <script src="/static/js/sweetalert.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -27,8 +30,46 @@
     <![endif]-->
 
     <script type="text/javascript">
-
-        
+    // function validarRoteiro(){
+    //         if(document.form.nome_roteiro.value != "")
+    //             editarRoteiro();
+    //         else
+    //                 swal({
+    //                     title: "Valor inválido!",
+    //                     text: "Você deve preencher os campos corretamente!",
+    //                     type: "warning",
+    //                     confirmButtonText: "Ok",
+    //                     closeOnConfirm: true
+    //                 });
+                    
+    //         }
+        function editarRoteiro(){
+                $.ajax({
+                          type: "POST",
+                          url: "/editarRoteiro",
+                          data: $('form').serialize(),
+                          success:  function(retorno) {
+                                        swal({
+                                        title: "Cadastrado!",
+                                                text: "Registro alterado com sucesso!",
+                                                type: "success",
+                                                showCancelButton: false,
+                                                confirmButtonText: "Ok",
+                                                closeOnConfirm: true },
+                                                function(){  window.location.replace("/listagemRoteiro");
+                                        });
+                                    },
+                          error:  function()  {  
+                                    swal({
+                                            title: "Valor inválido!",
+                                            text: "Você deve preencher os campos corretamente!",
+                                            type: "warning",
+                                            confirmButtonText: "Ok",
+                                            closeOnConfirm: true
+                                    });
+                                },
+                }); 
+            }
     </script>
 </head>
 
@@ -120,11 +161,12 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form role="form" name="form" action="" method="post">
+                                    <form role="form" name="form" method="post">
 
-
+                                        <div class="form-group">
                                         <label>Nome</label>
                                             <input class="form-control" name="nome_roteiro" value="{{ roteiro.getTitulo() }}">
+                                        </div>
 
                                        
                                         <div class="form-group">
@@ -151,9 +193,7 @@
                                             <input type="text" class="form-control" id="tokenfield" name="tokenfield" value="{{ palavra_chave }}" >
                                         </div>
                                         </div>
-
-                                      <input type="submit" class="btn btn-default"></input>
-{#                                        <button class="btn btn-default" onclick="editarRoteiro();">Editar</button>#}
+                                        <button type="button" class="btn btn-default" onclick="editarRoteiro();">Salvar</button>
                                     </form>
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->
