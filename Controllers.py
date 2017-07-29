@@ -80,48 +80,54 @@ def cadastroUsuario():
     return render_template('roteiro/formularioUsuario.html')
 
 
-@app.route("/editarRoteiro/<string:id>", methods=["GET", "POST"])
+@app.route("/editarRoteiro/<string:id>", methods=["GET"])
 def editarRoteiro(id):
-
 
     roteiro=RoteiroDAO.getRoteiro(id)
 
-    if (request.method == "POST"):
-        titulo = request.form.get("nome_roteiro")
-        generos = GeneroDAO.getGeneros()
+    palavras = juntarPalavras(roteiro.getPalavrasChave())
+
+    totalGeneros = GeneroDAO.getGeneros()
 
 
-        palavrasChave = request.form.get("tokenfield")
-        resultadoGenero = []
-        resultadoPalavraChave = []
-        for generoTemp in generos:
-            if request.form.get(generoTemp) == 'on':
-                resultadoGenero.append(generoTemp)
-
-        palavras_chave = palavrasChave.split(", ")
-
-        for palavraTemp in palavras_chave:
-            palavraChave = PalavraChave(id, palavraTemp)
-            resultadoPalavraChave.append(palavraChave)
-
-        roteiro = Roteiro(id,titulo, resultadoPalavraChave, resultadoGenero)
+    return render_template("roteiro/editarRoteiro.html", roteiro = roteiro ,palavra_chave = palavras, totalGeneros = totalGeneros)
 
 
-        RoteiroDAO.editar(roteiro)
 
-        # return redirect(url_for('listarRoteiros'))
-        return listarRoteiros()
+@app.route("/editarRoteiroPost", methods=["POST"])
+def editarRoteiroPost():
+
+    print(request.form.get("idRoteiro"))
+
+    idRoteiro = request.form.get("idRoteiro")
+
+    roteiro = RoteiroDAO.getRoteiro(idRoteiro)
+
+    titulo = request.form.get("nome_roteiro")
+
+    generos = GeneroDAO.getGeneros()
 
 
-    elif (request.method == "GET"):
+    palavrasChave = request.form.get("tokenfield")
+    resultadoGenero = []
+    resultadoPalavraChave = []
+    for generoTemp in generos:
+        if request.form.get(generoTemp) == 'on':
+            resultadoGenero.append(generoTemp)
+
+    palavras_chave = palavrasChave.split(", ")
+
+    for palavraTemp in palavras_chave:
+        palavraChave = PalavraChave(idRoteiro, palavraTemp)
+        resultadoPalavraChave.append(palavraChave)
+
+    roteiro = Roteiro(idRoteiro,titulo, resultadoPalavraChave, resultadoGenero)
 
 
-        palavras = juntarPalavras(roteiro.getPalavrasChave())
+    RoteiroDAO.editar(roteiro)
 
-        totalGeneros = GeneroDAO.getGeneros()
-
-
-        return render_template("roteiro/editarRoteiro.html", roteiro = roteiro ,palavra_chave = palavras, totalGeneros = totalGeneros)
+    # return redirect(url_for('listarRoteiros'))
+    return listarRoteiros()
 
 
 @app.route("/detalharRoteiro/<int:id>")

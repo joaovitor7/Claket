@@ -30,23 +30,23 @@
     <![endif]-->
 
     <script type="text/javascript">
-    // function validarRoteiro(){
-    //         if(document.form.nome_roteiro.value != "")
-    //             editarRoteiro();
-    //         else
-    //                 swal({
-    //                     title: "Valor inválido!",
-    //                     text: "Você deve preencher os campos corretamente!",
-    //                     type: "warning",
-    //                     confirmButtonText: "Ok",
-    //                     closeOnConfirm: true
-    //                 });
+    function validarRoteiro(){
+            if(document.form.nome_roteiro.value != "")
+                editarRoteiro();
+            else
+                    swal({
+                        title: "Valor inválido!",
+                        text: "Você deve preencher os campos corretamente!",
+                        type: "warning",
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: true
+                    });
                     
-    //         }
+            }
         function editarRoteiro(){
                 $.ajax({
                           type: "POST",
-                          url: "/editarRoteiro",
+                          url: "/editarRoteiroPost",
                           data: $('form').serialize(),
                           success:  function(retorno) {
                                         swal({
@@ -56,14 +56,13 @@
                                                 showCancelButton: false,
                                                 confirmButtonText: "Ok",
                                                 closeOnConfirm: true },
-                                                function(){  window.location.replace("/listagemRoteiro");
-                                        });
+                                                function(){  window.location.replace("/listagemRoteiro");  });
                                     },
                           error:  function()  {  
                                     swal({
-                                            title: "Valor inválido!",
-                                            text: "Você deve preencher os campos corretamente!",
-                                            type: "warning",
+                                            title: "Erro!",
+                                            text: "Erro interno, por favor, contacte o suporte!",
+                                            type: "error",
                                             confirmButtonText: "Ok",
                                             closeOnConfirm: true
                                     });
@@ -99,8 +98,6 @@
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="#"><i class="fa fa-user fa-fw"></i>Perfil</a>
                         </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i>Configurações</a>
-                        </li>
                         <li class="divider"></li>
                         <li><a href="#"><i class="fa fa-sign-out fa-fw"></i>Sair</a>
                         </li>
@@ -129,13 +126,6 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                        <li>
-                            <a href="#">Configurações</a>
-                        </li>
-                        <li>
-                            <a href="#">Sair</a>
-                        </li>
-                        
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -193,7 +183,8 @@
                                             <input type="text" class="form-control" id="tokenfield" name="tokenfield" value="{{ palavra_chave }}" >
                                         </div>
                                         </div>
-                                        <button type="button" class="btn btn-default" onclick="editarRoteiro();">Salvar</button>
+                                        <button type="button" class="btn btn-default" onclick="validarRoteiro();">Salvar</button>
+                                        <input type="hidden" name="idRoteiro" value={{roteiro.getId()}}>
                                     </form>
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->
