@@ -1,8 +1,15 @@
+import json
+
 class Tag():
 
     __tag = None
     __sentimento = None
     __qtTweets = None
+
+    def __init__(self, tag=None, sentimento=None, qtTweets=None):
+        self.__tag = tag
+        self.__sentimento = sentimento
+        self.__qtTweets = qtTweets
 
     def getTag(self):
         return self.__tag
@@ -21,3 +28,10 @@ class Tag():
 
     def setQtTweets(self,qtTweets):
         self.__qtTweets = qtTweets
+
+    def to_json(self):
+        jsonObject = {"tag": self.getTag(),
+               "sentimento": self.getSentimento(),
+                "quantidadeTweets": self.getQtTweets()}
+        return jsonObject
+
