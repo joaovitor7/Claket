@@ -4,11 +4,11 @@ from random import randint
 
 class PalavraChave():
 
-	def __init__(self, id, tag, sentimento = 'neutro'):
-		sentimentos = ['neutro', 'positivo', 'negativo']
+	def __init__(self, id, tag, sentimento = 'null', qntTweets = 0):
 		self.__id = id
 		self.__tag = tag
-		self.__sentimento = sentimentos[randint(0,2)]
+		self.__sentimento = sentimento
+		self.__qntTweets = qntTweets
 
 	def getId(self):
 		return self.__id
@@ -30,10 +30,10 @@ class PalavraChave():
 
 class Roteiro():
 
-	def __init__(self, id, titulo, palavrasChaves, generos, aceitacao = '0', dataAvaliacao = '1990/12/12'):
+	def __init__(self, id, titulo, palavrasChaves, generos, aceitacao = None, dataAvaliacao = '1990/12/12'):
 		self.__id = id
 		self.__titulo = titulo
-		self.__aceitacao = randint(0, 10)
+		self.__aceitacao = aceitacao
 		self.__palavrasChaves = palavrasChaves
 		self.__dataAvaliacao = dataAvaliacao
 		self.__generos = generos

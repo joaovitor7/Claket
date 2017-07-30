@@ -28,7 +28,7 @@ def cadastrarRoteiro():
     return render_template("roteiro/formularioRoteiro.html", generos = generos)
 
 
-@app.route("/cadastroRoteiro", methods=["GET", "POST"])
+@app.route("/cadastroRoteiro", methods=["POST"])
 def cadastroRoteiro():
     if (request.method == "POST"):
         id=None
@@ -54,7 +54,7 @@ def cadastroRoteiro():
         if RoteiroDAO.inserir(roteiro,usuario):
             return listarRoteiros()
 
-    return listarRoteiros()
+
 
 
 @app.route("/listagemRoteiro")
@@ -62,7 +62,7 @@ def listarRoteiros():
     roteiros = RoteiroDAO.listar('23456789')
     return render_template("roteiro/listagemRoteiro.html", roteiros=roteiros)
 
-@app.route("/excluirRoteiro/<int:idRoteiro>", methods=["GET", "POST"])
+@app.route("/excluirRoteiro/<int:idRoteiro>", methods=["POST"])
 def excluirRoteiro(idRoteiro):
 
     # jsonData = request.get_json(force=True, silent=False, cache=True)
@@ -136,3 +136,15 @@ def detalharRoteiro(id):
 
     palavrasChaves = juntarPalavras(roteiro.getPalavrasChave())
     return render_template("roteiro/detalharRoteiro.html", roteiro = roteiro)
+
+@app.route("/avaliar", methods=["POST"])
+def avaliar():
+
+    roteiroId = request.form.get('roteiroId')
+
+    roteiro = RoteiroDAO.getRoteiro(roteiroId)
+
+    palavrasChaves = roteiro.getPalavrasChave()
+
+
+    return render_template('roteiro/listagemRoteiro.html')

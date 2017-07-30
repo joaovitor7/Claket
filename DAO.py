@@ -123,7 +123,13 @@ class PalavraChaveDAO():
                 db.session.add(tabelaPalavraChave)
                 db.session.flush()
                 tabelaRoteiroPalavraChave = TabelaRoteiroPalavraChave(tabelaRoteiro.id, tabelaPalavraChave.id)
+
+                tabelaSentimento = TabelaSentimento.query.filter_by(sentimento = palavraTemp.getSentimento()).first()
+
+                tabelaSentimentoPalavraChave = TabelaSentimentoPalavraChave(tabelaSentimento.id, tabelaPalavraChave.id,'1990/12/12', 0)
+
                 db.session.add(tabelaRoteiroPalavraChave)
+                db.session.add(tabelaSentimentoPalavraChave)
                 db.session.commit()
             else:
                 relacao_no_banco = TabelaRoteiroPalavraChave.query.filter_by(id_roteiro = tabelaRoteiro.id,

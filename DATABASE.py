@@ -71,7 +71,7 @@ class TabelaRoteiro(db.Model):
 
     id = db.Column(db.INT(), primary_key = True)
     titulo = db.Column(db.VARCHAR(45), nullable = False)
-    aceitacao = db.Column(db.VARCHAR(45), nullable = False)
+    aceitacao = db.Column(db.VARCHAR(45), nullable = True)
     id_usuario = db.Column(db.VARCHAR(45), ForeignKey('Usuario.cpf'), nullable = False)
     data_avaliacao= db.Column(db.DATE(), nullable = False)
 
@@ -129,43 +129,18 @@ class TabelaSentimentoPalavraChave(db.Model):
     __tablename__ = 'SentimentoPalavraChave'
 
     id_sentimento = db.Column(db.INT(), ForeignKey('Sentimento.id'), primary_key = True, nullable = False)
-    id_palavrachave = db.Column(db.INT(), ForeignKey('PalavraChave.id'), primary_key = True, nullable = False)
+    id_palavra_chave = db.Column(db.INT(), ForeignKey('PalavraChave.id'), primary_key = True, nullable = False)
+    data = db.Column(db.DATE(), nullable = False)
+    qnt_de_tweets = db.Column(db.INT(), nullable= False)
+
 
     id_Sentimento = relationship(TabelaSentimento, foreign_keys = [id_sentimento])
-    id_Palavrachave = relationship(TabelaPalavraChave, foreign_keys = [id_palavrachave])
+    id_Palavrachave = relationship(TabelaPalavraChave, foreign_keys = [id_palavra_chave])
 
-    def __init__(self, id_sentimento, id_palavrachave):
+    def __init__(self, id_sentimento, id_palavra_chave,data,qnt_de_tweets):
         self.id_sentimento = id_sentimento
-        self.id_palavrachave = id_palavrachave
-
-
-class TabelaTweet(db.Model):
-    __tablename__ = 'Tweet'
-
-    id = db.Column(db.INT(), primary_key = True, nullable = False)
-    texto = db.Column(db.VARCHAR(200), nullable = False)
-    data = db.Column(db.VARCHAR(45), nullable = False)
-    id_sentimento = db.Column(db.INT(), ForeignKey('Sentimento.id'), nullable = False)
-
-
-    fk_id_sentimento = relationship(TabelaSentimento, foreign_keys = [id_sentimento])
-
-    def __init__(self, id, texto, data, sentimento):
-        self.id = id
-        self.texto = texto
+        self.id_palavra_chave = id_palavra_chave
         self.data = data
-        self.sentimento= sentimento
-        
+        self.qnt_de_tweets = qnt_de_tweets
 
-class TabelaTweetPalavrachave(db.Model):
-    __tablename__ = 'TweetPalavraChave'
 
-    id_tweet = db.Column(db.INT(), ForeignKey('Tweet.id'), nullable = False, primary_key = True)
-    id_palavra_chave = db.Column(db.INT(), ForeignKey('PalavraChave.id'), nullable = False, primary_key = True)
-
-    id_Tweet = relationship(TabelaTweet, foreign_keys = [id_tweet])
-    id_Palavra_Chave = relationship(TabelaPalavraChave, foreign_keys = [id_palavra_chave])
-
-    def __init__(self, id_tweet, id_palavrachave):
-        self.id_tweet = id_tweet
-        self.id_palavrachave = id_palavrachave

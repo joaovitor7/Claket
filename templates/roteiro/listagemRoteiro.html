@@ -24,7 +24,10 @@
 
       <script src="/static/js/sweetalert.min.js"></script>
 
-      <style type="text/css">  .centered{  text-align:center;  }  </style>
+      <style type="text/css">
+          .centered{  text-align:center;  }
+          .TamanhoImg{ max-height: 30%; max-width: 30%; }
+      </style>
 
 
       <script type="text/javascript">
@@ -146,9 +149,18 @@
                         <tr class="centered">
                             <td><a href="/detalharRoteiro/{{ roteiro.getId() }}" >{{ roteiro.getTitulo() }}</a></td>
                             <td>dd/mm/aaaa</td>
-                            <td>{{ roteiro.getAceitacao() }}</td>
+                            <td>
+                                {% if roteiro.getAceitacao() == None %}
+                                    <img class="TamanhoImg" src="/static/img/exclamation.png" alt="Roteiro não cadastrado!">
+                                {% else %}
+                                    {{ roteiro.getAceitacao()}}
+                                {% endif %}
+                            </td>
                             <td><button class="btn btn-default btn-primary" onclick="editar('{{roteiro.getId()}}');">Editar</button></td>
                             <td><button class="btn btn-default btn-danger" onclick="excluir('{{roteiro.getId()}}');">Excluir</button></td>
+
+
+
                         </tr>
                         {% endfor %}
                 </table>

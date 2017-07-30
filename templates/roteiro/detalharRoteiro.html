@@ -20,6 +20,12 @@
     <link rel="stylesheet"
       href="/static/css/font-awesome.min.css">
 
+    <link rel="stylesheet"
+      href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet"
+      href="/static/css/sweetalert.css">
+      <script src="/static/js/sweetalert.min.js"></script>
+
     <style>
           .txt-centered {  text-align: center;  }
           .aEsquerda {  float: left;  }
@@ -27,8 +33,50 @@
           .rotulos {  padding: 0% 1% 0% 1%; text-transform: bold;  }
           .painel {  max-height: 320px; overflow-y: scroll;  }
           .generos {  padding: 1%  }
+          .TamanhoButton{
+              margin-top: 25px;
+              min-width: 200px;
+              min-height: 45px;
+              font-size: large;
+          }
 
     </style>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+    function avaliarRoteiro(){
+                $.ajax({
+                          type: "POST",
+                          url: "/avaliar",
+                          data: $('form').serialize(),
+                          success: function() {
+                                        swal({
+                                        title: "Avaliado!",
+                                                text: "Roteiro avaliado com sucesso!",
+                                                type: "success",
+                                                showCancelButton: false,
+                                                confirmButtonText: "Ok",
+                                                closeOnConfirm: true },
+                                                function(){  window.location.replace("/listagemRoteiro");
+                                        });
+                                        },
+                          error: function()  {
+                                    swal({
+                                            title: "Erro!",
+                                            text: "Erro interno, contate o suporte!",
+                                            type: "danger",
+                                            confirmButtonText: "Ok",
+                                            closeOnConfirm: true
+                                    });
+                                },
+                });
+            }
+    </script>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -103,7 +151,13 @@
             <div class="row">
                 <div class="col-lg-12 page-header">
                     <h1 class="aEsquerda">Detalhes do {{ roteiro.getTitulo() }}</h1>
-                    <h1 class="aDireita">Nota: {{ roteiro.getAceitacao() }}</h1>
+                    {% if roteiro.getAceitacao() == None%}
+                        <button class="btn btn-success aDireita TamanhoButton" onclick="avaliarRoteiro();">Avaliar</button>
+                    {% else %}
+
+                        <h1 class="aDireita">Nota: {{ roteiro.getAceitacao() }}</h1>
+                    {% endif %}
+
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -172,6 +226,9 @@
                                             {{ palavraTemp.getTag()}}</div>
                                     {% endif %}
                             {% endfor %}
+                            <form name="form" method="post">
+                                <input type="hidden" name="roteiroId" id="roteiroId" value="{{ roteiro.getId() }}">
+                            </form>
                             </div>
                         </div>
                         <!-- /.col-lg-12 -->
