@@ -27,7 +27,6 @@ lista_filmes = [
     'baywatch', 'meu passado me condena', 'american pie'
 ]
 
-seq = 0
 
 def coletar_tweets(palavra, quant_tweets=100):
     data = datetime.datetime.now() - datetime.timedelta(30)

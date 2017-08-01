@@ -1,8 +1,8 @@
 import json
-from backend.Tag import Tag
-from backend.SentimentoPredominante import SentimentoPredominante
+from Tag import Tag
+from SentimentoPredominante import SentimentoPredominante
 #from backend.coleta_tweets import *
-#from backend.classificador import *
+from classificador import *
 
 def avaliar(jsonAvaliar):
     jsonObjects = json.loads(jsonAvaliar)
@@ -38,7 +38,7 @@ def avaliar(jsonAvaliar):
     return jsonResponse
 
 def determinarSentimento(tag):
-    tweets = coletar_tweets(tag)
+    tweets = coletar_tweets(tag, 10)
     qtTweets = len(tweets)
 
     contadorPositivo, contadorNegativo, contadorNeutro = contaTweetsClasse(tweets)
@@ -80,13 +80,13 @@ def contaTweetsClasse(tweets):
 
     for tweet in tweets:
         sentimento = classificar(tweet)
-        if sentimento == "positivo":
+        if sentimento.lower() == "positivo":
             contadorPositivo += 1
-        elif sentimento == "negativo":
+        elif sentimento.lower() == "negativo":
             contadorNegativo += 1
         else:
             contadorNeutro += 1
-
+    print("%d %d %d" % (contadorPositivo, contadorNegativo, contadorNeutro))
     return contadorPositivo, contadorNegativo, contadorNeutro
 
 def calculaNota(listaTags):
@@ -94,8 +94,10 @@ def calculaNota(listaTags):
     totalTweets = 0 # só para tags com sentimento positivo ou negativo
     for tag in listaTags:
         sentimento = tag.getSentimento().lower()
+        print(sentimento)
         if sentimento != "neutro":
             qtTweets = tag.getQtTweets()
+            print(qtTweets)
             totalTweets += qtTweets
 
     pesoNota = 10.0/totalTweets
@@ -110,19 +112,19 @@ def calculaNota(listaTags):
     notaFinal = round(notaFinal,2)
     return notaFinal
 
-tag1 = Tag("fantasma","positivo",100)
-tag2 = Tag("palhaco", "positivo", 30)
-tag3 = Tag("explosao", "positivo", 50)
-tag4 = Tag("crianca", "neutro", 45)
-tag5 = Tag("amor", "neutro", 98)
-tag6 = Tag("casamento", "negativo", 44)
-tag7 = Tag("bebida", "negativo", 1)
-tag8 = Tag("sequestro", "neutro", 10)
-tag9 = Tag("carro", "neutro", 122)
-tag10 = Tag("caneta", "neutro", 73)
+tag1 = Tag("fantasma","null",100)
+tag2 = Tag("palhaco", "null", 30)
+tag3 = Tag("explosao", "null", 50)
+tag4 = Tag("crianca", "null", 45)
+tag5 = Tag("amor", "null", 98)
+tag6 = Tag("casamento", "null", 44)
+tag7 = Tag("bebida", "null", 1)
+tag8 = Tag("sequestro", "null", 10)
+tag9 = Tag("carro", "null", 122)
+tag10 = Tag("caneta", "null", 73)
 
 
-tags = [tag1,tag2,tag3,tag4,tag5,tag6,tag7,tag8,tag9,tag10]
+tags = [tag1,tag2,tag3,tag4,tag5, tag6,tag7,tag8,tag9,tag10]
 
 jsonAvaliar = json.dumps([tag.to_json() for tag in tags])
 
