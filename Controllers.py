@@ -1,10 +1,11 @@
 from Claket import app
 from DATABASE import *
 from Dominio import *
-from Utils import juntarPalavras
+from Utils import *
 from DAO import *
-from flask import render_template, request, url_for, redirect, json
-
+from flask import render_template, request, url_for, redirect
+import json
+import requests
 
 @app.route('/')
 def index():
@@ -62,7 +63,7 @@ def listarRoteiros():
     roteiros = RoteiroDAO.listar('23456789')
     return render_template("roteiro/listagemRoteiro.html", roteiros=roteiros)
 
-@app.route("/excluirRoteiro/<int:idRoteiro>", methods=["POST"])
+@app.route("/excluirRoteiro/<int:idRoteiro>", methods=["GET"])
 def excluirRoteiro(idRoteiro):
 
     # jsonData = request.get_json(force=True, silent=False, cache=True)
@@ -71,10 +72,11 @@ def excluirRoteiro(idRoteiro):
     # idRoteiro = jsonData['idRoteiro']
     
     RoteiroDAO.excluir(idRoteiro)
+
     return redirect(url_for('listarRoteiros'))
 
 
-@app.route("/formularioUsuario",)
+@app.route("/formularioUsuario")
 def cadastroUsuario():
 
     return render_template('roteiro/formularioUsuario.html')
@@ -146,5 +148,42 @@ def avaliar():
 
     palavrasChaves = roteiro.getPalavrasChave()
 
+    jsonRetorno = montarJson(palavrasChaves)
+
+
+
+    r = requests.get('https://503db64d.ngrok.io/', data= jsonRetorno, timeout = 10000)
+
+
+
+
+    resposta1 = str(r.json())
+
+
+
+    resposta = json.loads(resposta1)
+
+
+
+
+    palavrasChaves = resposta['tags']
+
+
+    print(palavrasChaves)
+    for palavraTemp in palavrasChaves:
+        palavra = palavraTemp['tag']
+        sentimento = palavraTemp['sentimento']
+        quantidade_tweets = palavraTemp['quantidadeTweets']
+        palavraChave = PalavraChave(None,palavra,sentimento,quantidade_tweets)
+        PalavraChaveDAO.atualizarSentimento(palavraChave)
+
+
+
+    RoteiroDAO.setNota(roteiroId, resposta['nota'])
 
     return render_template('roteiro/listagemRoteiro.html')
+
+@app.route("/json", methods=["GET"])
+def testeJson():
+    x = json.dumps({'teste':'olá mundo!'})
+    return x

@@ -1,6 +1,6 @@
 from Dominio import *
 from DATABASE import *
-
+from datetime import *
 
 class RoteiroDAO():
 
@@ -85,7 +85,11 @@ class RoteiroDAO():
         GeneroDAO.inserir(resultadoGenero, tabelaRoteiro)
 
         db.session.commit()
-
+    def setNota(id ,nota):
+        tabelaRoteiro = TabelaRoteiro.query.filter_by(id=id).first()
+        tabelaRoteiro.data_avaliacao = datetime.now().strftime('%Y-%m-%d')
+        tabelaRoteiro.aceitacao = nota
+        db.session.commit()
 
 class GeneroDAO():
 
@@ -140,11 +144,39 @@ class PalavraChaveDAO():
                     db.session.add(tabelaRoteiroPalavraChave)
                     db.session.commit()
 
-
     def getPalavraChave(id):
         tabelaPalavraChave = TabelaPalavraChave.query.filter_by(id=id).first()
-        palavraChave= PalavraChave(tabelaPalavraChave.id,tabelaPalavraChave.palavra)
-        return palavraChave
+
+        tabelaSentimentoPalavraChaveOrdenada = TabelaSentimentoPalavraChave.query.order_by(
+            (TabelaSentimentoPalavraChave.data).desc()).all()
+
+        for tabelaSentimentoPalavraChave in tabelaSentimentoPalavraChaveOrdenada:
+
+            if tabelaSentimentoPalavraChave.id_palavra_chave == id:
+                tabelaSentimento = TabelaSentimento.query.filter_by(
+                    id=tabelaSentimentoPalavraChave.id_sentimento).first()
+
+                palavraChave = PalavraChave(tabelaPalavraChave.id, tabelaPalavraChave.palavra,
+                                            tabelaSentimento.sentimento, tabelaSentimentoPalavraChave.qnt_de_tweets)
+
+                return palavraChave
+
+    def atualizarSentimento(palavraChave):
+
+        tabelaPalavraChave = TabelaPalavraChave.query.filter_by(palavra=palavraChave.getTag()).first()
+
+        tabelaSentimento = TabelaSentimento.query.filter_by(sentimento=palavraChave.getSentimento()).first()
+
+        data = datetime.now().strftime('%Y-%m-%d')
+
+        tabelaSentimentoPalavraChave = TabelaSentimentoPalavraChave.query.filter_by(id_sentimento =tabelaPalavraChave.id, data = data).first()
+        if (tabelaSentimentoPalavraChave == None):
+
+            tabelaSentimentoPalavraChave = TabelaSentimentoPalavraChave(tabelaSentimento.id, tabelaPalavraChave.id, data,
+                                                                        palavraChave.getQntTweets())
+
+            db.session.add(tabelaSentimentoPalavraChave)
+            db.session.commit()
 
 class UsuarioDAO():
     def setPlano(idUsuario, idPlano):

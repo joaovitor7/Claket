@@ -13,20 +13,19 @@ class PalavraChave():
 	def getId(self):
 		return self.__id
 		
-	def setId(id):
+	def setId(self, id):
 		self.__id = id
 
 	def getTag(self):
 		return self.__tag
 		
-	def setTag(tag):
+	def setTag(self, tag):
 		self.__tag = tag
 
 	def getSentimento(self):
 		return self.__sentimento
-		
-	def setSentimento(tag):
-		self.__sentimento = sentimento
+
+	def getQntTweets(self):return self.__qntTweets
 
 class Roteiro():
 
@@ -53,7 +52,7 @@ class Roteiro():
 	def getAceitacao(self):
 		return self.__aceitacao
 		
-	def setAceitacao(aceitacao):
+	def setAceitacao(self,aceitacao):
 		self.__aceitacao = aceitacao
 
 	def getPalavrasChave(self):
