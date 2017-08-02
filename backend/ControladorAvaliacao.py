@@ -5,10 +5,8 @@ from SentimentoPredominante import SentimentoPredominante
 from classificador import *
 
 def avaliar(jsonAvaliar):
-    print(jsonAvaliar)
     jsonObjects = json.loads(jsonAvaliar)
     tags = []
-    print(type(jsonObjects))
 
     for jsonObject in jsonObjects:
         texto = jsonObject['tag']
@@ -33,10 +31,9 @@ def avaliar(jsonAvaliar):
 
     nota = calculaNota(tags)
 
-    jsonTags = json.dumps([tag.to_json() for tag in tags])
-
+    #jsonTags = json.dumps([tag.to_json() for tag in tags])
+    jsonTags = [tag.to_json() for tag in tags]
     jsonResponse = json.dumps({"tags": jsonTags, "nota": nota})
-
     return jsonResponse
 
 def determinarSentimento(tag):
@@ -93,7 +90,7 @@ def contaTweetsClasse(tweets):
 
 def calculaNota(listaTags):
 
-    totalTweets = 0 # só para tags com sentimento positivo ou negativo
+    totalTweets = 1 # só para tags com sentimento positivo ou negativo
     for tag in listaTags:
         sentimento = tag.getSentimento().lower()
         print(sentimento)

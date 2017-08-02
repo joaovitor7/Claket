@@ -8,11 +8,10 @@ app = Flask(__name__)
 api = Api(app)
 
 class ClaketAPI(Resource):
-    def post(self):
-        jsons = request.get_json()
-        lista_jsons = []
-        lista_jsons.append(jsons)
-        json_resposta = avaliar(json.dumps(lista_jsons))
+    def get(self):
+        jsons = request.get_data()
+        json_decode = jsons.decode('utf-8')
+        json_resposta = avaliar(json.dumps(json.loads(json_decode)))
         return json_resposta
 
 api.add_resource(ClaketAPI, '/')
