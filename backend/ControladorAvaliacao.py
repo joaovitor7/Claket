@@ -5,8 +5,10 @@ from SentimentoPredominante import SentimentoPredominante
 from classificador import *
 
 def avaliar(jsonAvaliar):
+    print(jsonAvaliar)
     jsonObjects = json.loads(jsonAvaliar)
     tags = []
+    print(type(jsonObjects))
 
     for jsonObject in jsonObjects:
         texto = jsonObject['tag']
@@ -111,11 +113,12 @@ def calculaNota(listaTags):
 
     notaFinal = round(notaFinal,2)
     return notaFinal
-
+"""
 tag1 = Tag("fantasma","null",100)
 tag2 = Tag("palhaco", "null", 30)
 tag3 = Tag("explosao", "null", 50)
 tag4 = Tag("crianca", "null", 45)
+
 tag5 = Tag("amor", "null", 98)
 tag6 = Tag("casamento", "null", 44)
 tag7 = Tag("bebida", "null", 1)
@@ -124,9 +127,11 @@ tag9 = Tag("carro", "null", 122)
 tag10 = Tag("caneta", "null", 73)
 
 
-tags = [tag1,tag2,tag3,tag4,tag5, tag6,tag7,tag8,tag9,tag10]
+tags = [tag1,tag2,tag3,tag4]#,tag5, tag6,tag7,tag8,tag9,tag10]
 
 jsonAvaliar = json.dumps([tag.to_json() for tag in tags])
-
-jsonResposta = avaliar(jsonAvaliar)
-print(jsonResposta)
+print(jsonAvaliar)
+print(type(jsonAvaliar))
+#jsonResposta = avaliar(jsonAvaliar)
+#print(jsonResposta)
+"""
