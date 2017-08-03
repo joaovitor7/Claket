@@ -90,7 +90,7 @@ def contaTweetsClasse(tweets):
 
 def calculaNota(listaTags):
 
-    totalTweets = 1 # só para tags com sentimento positivo ou negativo
+    totalTweets = 0 # só para tags com sentimento positivo ou negativo
     for tag in listaTags:
         sentimento = tag.getSentimento().lower()
         print(sentimento)
@@ -98,6 +98,9 @@ def calculaNota(listaTags):
             qtTweets = tag.getQtTweets()
             print(qtTweets)
             totalTweets += qtTweets
+
+    if totalTweets == 0:
+        return 5
 
     pesoNota = 10.0/totalTweets
     notaFinal = 0
