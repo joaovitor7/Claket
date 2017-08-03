@@ -151,20 +151,12 @@ def avaliar():
     jsonRetorno = montarJson(palavrasChaves)
 
 
-
-    r = requests.get('https://503db64d.ngrok.io/', data= jsonRetorno, timeout = 10000)
-
-
+    r = requests.get('https://8588f3b4.ngrok.io/', data= jsonRetorno, timeout = 10000)
 
 
     resposta1 = str(r.json())
 
-
-
     resposta = json.loads(resposta1)
-
-
-
 
     palavrasChaves = resposta['tags']
 

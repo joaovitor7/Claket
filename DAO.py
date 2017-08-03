@@ -38,7 +38,7 @@ class RoteiroDAO():
                 genero = GeneroDAO.getGenero(generoTemp.id_genero)
                 generos.append(genero)
 
-            roteiro=Roteiro(roteiroTemp.id,roteiroTemp.titulo,palavrasChave,generos,roteiroTemp.aceitacao)
+            roteiro=Roteiro(roteiroTemp.id,roteiroTemp.titulo,palavrasChave,generos,roteiroTemp.aceitacao, str(roteiroTemp.data_avaliacao))
             roteirosUsuario.append(roteiro)
 
         return roteirosUsuario
@@ -169,7 +169,7 @@ class PalavraChaveDAO():
 
         data = datetime.now().strftime('%Y-%m-%d')
 
-        tabelaSentimentoPalavraChave = TabelaSentimentoPalavraChave.query.filter_by(id_sentimento =tabelaPalavraChave.id, data = data).first()
+        tabelaSentimentoPalavraChave = TabelaSentimentoPalavraChave.query.filter_by(id_palavra_chave =tabelaPalavraChave.id, data = data).first()
         if (tabelaSentimentoPalavraChave == None):
 
             tabelaSentimentoPalavraChave = TabelaSentimentoPalavraChave(tabelaSentimento.id, tabelaPalavraChave.id, data,

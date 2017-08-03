@@ -148,7 +148,11 @@
                         {%  for roteiro in roteiros %}
                         <tr class="centered">
                             <td><a href="/detalharRoteiro/{{ roteiro.getId() }}" >{{ roteiro.getTitulo() }}</a></td>
-                            <td>dd/mm/aaaa</td>
+                            {% if roteiro.getDataAvaliacao() == "1990-12-12" %}
+                                <td>Não avaliado</td>
+                            {% else %}
+                                <td>{{  roteiro.getDataAvaliacao()  }}</td>
+                            {% endif %}
                             <td>
                                 {% if roteiro.getAceitacao() == None %}
                                     <img class="TamanhoImg" src="/static/img/exclamation.png" alt="Roteiro não cadastrado!">
