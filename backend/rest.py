@@ -1,17 +1,22 @@
+import json
+
 from flask import Flask, request
 from flask_restful import Resource, Api
-import json
+from threading import Thread
 
 from backend.ControladorAvaliacao import avaliar
 
 app = Flask(__name__)
 api = Api(app)
+thread = None
 
 class ClaketAPI(Resource):
     def get(self):
         jsons = request.get_data()
         json_decode = jsons.decode('utf-8')
-        json_resposta = avaliar(json.dumps(json.loads(json_decode)))
+        thread = Thread(target=avaliar,  args=json.dumps(json.loads(json_decode)))
+        thread.start()
+        json_resposta = json.dumps({ "status":"OK" })
         return json_resposta
 
 api.add_resource(ClaketAPI, '/')

@@ -34,7 +34,8 @@ def avaliar(jsonAvaliar):
     #jsonTags = json.dumps([tag.to_json() for tag in tags])
     jsonTags = [tag.to_json() for tag in tags]
     jsonResponse = json.dumps({"tags": jsonTags, "nota": nota})
-    return jsonResponse
+    #return jsonResponse
+    print(jsonResponse)
 
 def determinarSentimento(tag):
     tweets = coletar_tweets(tag, 10)
