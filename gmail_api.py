@@ -32,10 +32,10 @@ def get_credentials():
         print('Storing credentials to ' + credential_path)
     return credentials
 
-def send_email(service, emails):
+def send_email(service, emails, nomeRoteiro, mensagem):
     sender = "me"
-    subject = "Teste do Gmail API"
-    message = create_email(sender, emails, subject)
+    subject = "A nota do " + nomeRoteiro + " está pronta, vai lá e dá uma sacada :)"
+    message = create_email(sender, emails, subject, nomeRoteiro, mensagem)
     try:
         message = (service.users().messages().send(userId=sender, body=message)
                    .execute())
@@ -44,7 +44,7 @@ def send_email(service, emails):
     except errors.HttpError as error:
         print('An error occurred: %s' % error)
 
-def create_email(sender, to, subject):
+def create_email(sender, to, subject, nomeRoteiro, mensagem):
     message = MIMEMultipart('related')
     message['from'] = sender
     message['to'] = to
@@ -53,7 +53,7 @@ def create_email(sender, to, subject):
     body = MIMEMultipart('alternative')
     message.attach(body)
 
-    html = "<h1>HELLO WORLD</h1>"
+    html = "<h1>%s</h1>" % (mensagem)
 
     format_html = MIMEText(html, 'html')
 
@@ -61,14 +61,9 @@ def create_email(sender, to, subject):
 
     return {'raw': base64.urlsafe_b64encode(message.as_bytes()).decode()}
 
-def main():
+def enviarEmail(emailUsuario, nomeRoteiro, mensagem):
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = discovery.build('gmail', 'v1', http=http)
 
-    send_email(service, "peticormei@gmail.com")
-
-
-
-if __name__ == '__main__':
-    main()
+    send_email(service, emailUsuario, nomeRoteiro, mensagem)

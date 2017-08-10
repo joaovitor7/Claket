@@ -35,7 +35,9 @@ def avaliar(jsonAvaliar):
     jsonTags = [tag.to_json() for tag in tags]
     jsonResponse = json.dumps({"tags": jsonTags, "nota": nota})
     #return jsonResponse
-    print(jsonResponse)
+    resposta = requests.get('https://779e2eb3.ngrok.io', data= jsonResponse, timeout = 10000)
+    print(str(resposta.json()))
+    # print(jsonResponse)
 
 def determinarSentimento(tag):
     tweets = coletar_tweets(tag, 10)

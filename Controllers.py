@@ -151,27 +151,30 @@ def avaliar():
     jsonRetorno = montarJson(palavrasChaves)
 
 
-    r = requests.get('https://8588f3b4.ngrok.io/', data= jsonRetorno, timeout = 10000)
+    r = requests.get('https://d941a262.ngrok.io', data= jsonRetorno, timeout = 10000)
+
 
 
     resposta1 = str(r.json())
 
-    resposta = json.loads(resposta1)
+    # resposta1 = str(r.json())
 
-    palavrasChaves = resposta['tags']
+    # resposta = json.loads(resposta1)
 
-
-    print(palavrasChaves)
-    for palavraTemp in palavrasChaves:
-        palavra = palavraTemp['tag']
-        sentimento = palavraTemp['sentimento']
-        quantidade_tweets = palavraTemp['quantidadeTweets']
-        palavraChave = PalavraChave(None,palavra,sentimento,quantidade_tweets)
-        PalavraChaveDAO.atualizarSentimento(palavraChave)
+    # palavrasChaves = resposta['tags']
 
 
+    # print(palavrasChaves)
+    # for palavraTemp in palavrasChaves:
+    #     palavra = palavraTemp['tag']
+    #     sentimento = palavraTemp['sentimento']
+    #     quantidade_tweets = palavraTemp['quantidadeTweets']
+    #     palavraChave = PalavraChave(None,palavra,sentimento,quantidade_tweets)
+    #     PalavraChaveDAO.atualizarSentimento(palavraChave)
 
-    RoteiroDAO.setNota(roteiroId, resposta['nota'])
+
+
+    # RoteiroDAO.setNota(roteiroId, resposta['nota'])
 
     return render_template('roteiro/listagemRoteiro.html')
 
