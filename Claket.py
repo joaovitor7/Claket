@@ -16,28 +16,24 @@ class ClientAPI(Resource):
     def post(self):
         jsons = request.get_data()
         json_decode = jsons.decode('utf-8')
+        resposta = json.loads(json_decode)
+        palavrasChaves = resposta['tags']
 
-	    resposta = json.loads(json_decode)
+        print(palavrasChaves)
 
-	    palavrasChaves = resposta['tags']
-
-
-	    print(palavrasChaves)
-	    for palavraTemp in palavrasChaves:
+        for palavraTemp in palavrasChaves:
 	        palavra = palavraTemp['tag']
 	        sentimento = palavraTemp['sentimento']
 	        quantidade_tweets = palavraTemp['quantidadeTweets']
 	        palavraChave = PalavraChave(None,palavra,sentimento,quantidade_tweets)
 	        PalavraChaveDAO.atualizarSentimento(palavraChave)
 
-
-	    RoteiroDAO.setNota(roteiroId, resposta['nota'])
-
-	    enviarEmail("silvaromerocf@gmail.com", "Wonder Woman", "çaca lá têu imêiu parssa tá no grau agora ;) e noiz")
+        RoteiroDAO.setNota(roteiroId, resposta['nota'])
+        enviarEmail("silvaromerocf@gmail.com", "Wonder Woman", "çaca lá têu imêiu parssa tá no grau agora ;) e noiz")
 
         return json.dumps({ "status":"OK" })
 
-api.add_resource(ClaketAPI, '/')
+api.add_resource(ClientAPI, '/')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
