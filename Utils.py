@@ -9,9 +9,9 @@ def juntarPalavras(palavras):
     palavrasChave = palavrasChave[0:-2]
     return palavrasChave
 
-def montarJson(palavrasChave):
+def montarJson(palavrasChave, roteiroId):
 
-
+    data = {}
     palavraChaveLista = []
     for palavraTemp in palavrasChave:
         dicionarioTemp = {}
@@ -20,6 +20,9 @@ def montarJson(palavrasChave):
         dicionarioTemp['quantidadeTweets'] = palavraTemp.getQntTweets()
         palavraChaveLista.append(dicionarioTemp)
 
-    jsonRetorno = json.dumps(palavraChaveLista)
-    return jsonRetorno
+    data['palavras'] = palavraChaveLista
+    data['roteiroId'] = roteiroId
 
+
+    jsonRetorno = json.dumps(data)
+    return jsonRetorno

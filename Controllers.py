@@ -148,14 +148,14 @@ def avaliar():
 
     palavrasChaves = roteiro.getPalavrasChave()
 
-    jsonRetorno = montarJson(palavrasChaves)
+    jsonRetorno = montarJson(palavrasChaves, roteiroId)
 
 
-    r = requests.get('https://d941a262.ngrok.io', data= jsonRetorno, timeout = 10000)
+    r = requests.get('http://7f9ab9d6.ngrok.io', data= jsonRetorno, timeout = 10000)
 
 
 
-    resposta1 = str(r.json())
+    # resposta1 = str(r.json())
 
     # resposta1 = str(r.json())
 
