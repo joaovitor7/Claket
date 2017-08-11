@@ -1,14 +1,22 @@
 import json
-from Tag import Tag
-from SentimentoPredominante import SentimentoPredominante
+
+import requests
+import gmail_api
+from flask import request
+
+from backend.Tag import Tag
+from backend.SentimentoPredominante import SentimentoPredominante
 #from backend.coleta_tweets import *
-from classificador import *
+from backend.classificador import *
 
 def avaliar(jsonAvaliar):
     jsonObjects = json.loads(jsonAvaliar)
+    roteiro_id = jsonObjects["roteiroId"]
+    list_palavras = jsonObjects["palavras"]
+
     tags = []
 
-    for jsonObject in jsonObjects:
+    for jsonObject in list_palavras:
         texto = jsonObject['tag']
         sentimento = jsonObject['sentimento']
         qtTweets = jsonObject['quantidadeTweets']
@@ -33,11 +41,13 @@ def avaliar(jsonAvaliar):
 
     #jsonTags = json.dumps([tag.to_json() for tag in tags])
     jsonTags = [tag.to_json() for tag in tags]
-    jsonResponse = json.dumps({"tags": jsonTags, "nota": nota})
+    jsonResponse = json.dumps({"tags": jsonTags, "nota": nota, "roteiroId":roteiro_id})
     #return jsonResponse
-    resposta = requests.get('https://779e2eb3.ngrok.io', data= jsonResponse, timeout = 10000)
-    print(str(resposta.json()))
+    print(jsonResponse, "oie")
+    resposta = requests.post('https://646749e7.ngrok.io', data= jsonResponse, timeout = 10000)
+    # print(str(resposta.json()))
     # print(jsonResponse)
+    print("FINALIZADO")
 
 def determinarSentimento(tag):
     tweets = coletar_tweets(tag, 10)

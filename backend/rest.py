@@ -4,7 +4,7 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 from threading import Thread
 
-from ControladorAvaliacao import avaliar
+from backend.ControladorAvaliacao import avaliar
 
 app = Flask(__name__)
 api = Api(app)
